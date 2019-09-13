@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os" // Import this package
 
+	goredis "github.com/go-redis/redis"
 	"github.com/pir5/health-worker/model"
 	"github.com/pkg/errors"
 
@@ -24,6 +25,7 @@ Start Worker Server
 	`,
 }
 var globalDB *gorm.DB
+var failedCounter model.FailedCounterModel
 
 // runWorker executes sub command and return exit code.
 func runWorker(cmdFlags *GlobalFlags, args []string) error {
@@ -52,12 +54,24 @@ func runWorker(cmdFlags *GlobalFlags, args []string) error {
 	}
 	globalDB = db
 
-	workers.Process("health_check", do, conf.Concurrency)
+	redisClient := goredis.NewClient(&goredis.Options{
+		Addr:     fmt.Sprintf("%s:%d", conf.Redis.Host, conf.Redis.Port),
+		Password: conf.Redis.Password,
+		DB:       conf.Redis.DB,
+	})
+	if _, err := redisClient.Ping().Result(); err != nil {
+		return err
+	}
 
+	failedCounter = model.NewFailedCounter(redisClient)
+
+	workers.Process(EnqueKey, do, conf.Concurrency)
+
+	// test data
 	t := map[string]string{
 		"hoge": "example",
 	}
-	workers.Enqueue("health_check",
+	workers.Enqueue(EnqueKey,
 		"Add",
 		t,
 	)
@@ -68,7 +82,9 @@ func runWorker(cmdFlags *GlobalFlags, args []string) error {
 }
 
 func do(msg *workers.Msg) {
+	var checkError error
 	h, err := model.NewHealthCheck(msg)
+
 	if err != nil || h == nil {
 		log.Error(errors.Wrap(err, "parse params failed"))
 	}
@@ -76,28 +92,41 @@ func do(msg *workers.Msg) {
 	if h != nil {
 		switch h.Type {
 		case model.HealthCheckTypeTCP:
-			if err := model.TCPCheck(&h.Params); err != nil {
-				log.Error(errors.Wrap(err, "tcp checker failed"))
+			if checkError = model.TCPCheck(&h.Params); checkError != nil {
+				log.Error(errors.Wrap(checkError, "tcp checker failed"))
 			}
 		case model.HealthCheckTypeHTTP:
-			if err := model.HTTPCheck(&h.Params, "http"); err != nil {
-				log.Error(errors.Wrap(err, "http checker failed"))
+			if checkError = model.HTTPCheck(&h.Params, "http"); checkError != nil {
+				log.Error(errors.Wrap(checkError, "http checker failed"))
 			}
 		case model.HealthCheckTypeHTTPS:
-			if err := model.HTTPCheck(&h.Params, "https"); err != nil {
-				log.Error(errors.Wrap(err, "https checker failed"))
+			if checkError = model.HTTPCheck(&h.Params, "https"); checkError != nil {
+				log.Error(errors.Wrap(checkError, "https checker failed"))
 			}
 		}
 
-		if err := afterCheck(h, (err == nil)); err != nil {
+		if err := afterCheck(h, failedCounter, (checkError == nil)); err != nil {
 			log.Error(errors.Wrap(err, "after check process failed"))
 		}
 	}
 }
 
-func afterCheck(h *model.HealthCheck, checkResult bool) error {
-	// Todo: make redis counterr
-	currentFailedCount := 100
+func afterCheck(h *model.HealthCheck, counter model.FailedCounterModel, checkResult bool) error {
+	var currentFailedCount int
+	key := fmt.Sprintf("failed_counter_%d", h.ID)
+	if !checkResult {
+		c, err := counter.Increment(key)
+		if err != nil {
+			return err
+		}
+		currentFailedCount = c
+	} else {
+		err := counter.Reset(key)
+		if err != nil {
+			return err
+		}
+	}
+
 	if currentFailedCount < h.Threshould {
 		checkResult = true
 	}

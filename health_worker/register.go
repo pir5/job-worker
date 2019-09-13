@@ -15,6 +15,9 @@ import (
 	// Import godis package
 )
 
+const EnqueKey = "health_check"
+const IntervalKey = "check_interval"
+
 var CmdRegister = &Command{
 	Run:       runRegister,
 	UsageLine: "register",
@@ -51,26 +54,16 @@ func runRegister(cmdFlags *GlobalFlags, args []string) error {
 
 	healthCheck := model.NewHealthCheckModel(db)
 	for {
-
 		healthChecks, err := healthCheck.FindBy(map[string]interface{}{
-			"check_interval": conf.PollInterval,
+			IntervalKey: conf.PollInterval,
 		})
+
 		if err != nil {
 			return err
 		}
 
-		t := ""
 		for _, v := range healthChecks {
-			switch v.Type {
-			case model.HealthCheckTypeTCP:
-				t = "tcp_check"
-			case model.HealthCheckTypeHTTP:
-				t = "http_check"
-			case model.HealthCheckTypeHTTPS:
-				t = "https_check"
-			}
-
-			workers.Enqueue(t,
+			workers.Enqueue(EnqueKey,
 				"Add",
 				&v.Params,
 			)

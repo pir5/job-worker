@@ -14,6 +14,7 @@ require (
 	github.com/garyburd/redigo v1.6.0 // indirect
 	github.com/go-openapi/spec v0.19.2 // indirect
 	github.com/go-openapi/swag v0.19.5 // indirect
+	github.com/go-redis/redis v6.15.5+incompatible
 	github.com/golang/protobuf v1.3.2 // indirect
 	github.com/jinzhu/gorm v1.9.10
 	github.com/jrallison/go-workers v0.0.0-20180112190529-dbf81d0b75bb
@@ -41,4 +42,5 @@ require (
 	golang.org/x/tools v0.0.0-20190905235650-93dcc2f048f5 // indirect
 	google.golang.org/api v0.3.1
 	gopkg.in/check.v1 v1.0.0-20190902080502-41f04d3bba15 // indirect
+	gopkg.in/redis.v5 v5.2.9
 )
