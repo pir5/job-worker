@@ -29,7 +29,7 @@ type RoutingPolicies []RoutingPolicy
 
 type RoutingPolicyModel interface {
 	FindBy(map[string]interface{}) (RoutingPolicies, error)
-	ChangeState(int) error
+	ChangeState(bool) error
 }
 
 func (r *RoutingPolicy) ChangeState(checkResult bool) error {

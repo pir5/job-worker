@@ -25,7 +25,13 @@ Start Worker Server
 	`,
 }
 var globalDB *gorm.DB
-var failedCounter model.FailedCounterModel
+
+const healthCheckIDKey = "health_check_id"
+
+type Worker struct {
+	failedCounter model.FailedCounterModel
+	routingPolicy model.RoutingPolicyModel
+}
 
 // runWorker executes sub command and return exit code.
 func runWorker(cmdFlags *GlobalFlags, args []string) error {
@@ -52,20 +58,23 @@ func runWorker(cmdFlags *GlobalFlags, args []string) error {
 	if err != nil {
 		return err
 	}
-	globalDB = db
 
 	redisClient := goredis.NewClient(&goredis.Options{
 		Addr:     fmt.Sprintf("%s:%d", conf.Redis.Host, conf.Redis.Port),
 		Password: conf.Redis.Password,
 		DB:       conf.Redis.DB,
 	})
+
 	if _, err := redisClient.Ping().Result(); err != nil {
 		return err
 	}
 
-	failedCounter = model.NewFailedCounter(redisClient)
+	w := Worker{
+		failedCounter: model.NewFailedCounter(redisClient),
+		routingPolicy: model.NewRoutingPolicyModel(db),
+	}
 
-	workers.Process(EnqueKey, do, conf.Concurrency)
+	workers.Process(EnqueKey, w.do, conf.Concurrency)
 
 	// test data
 	t := map[string]string{
@@ -81,7 +90,7 @@ func runWorker(cmdFlags *GlobalFlags, args []string) error {
 	return nil
 }
 
-func do(msg *workers.Msg) {
+func (w *Worker) do(msg *workers.Msg) {
 	var checkError error
 	h, err := model.NewHealthCheck(msg)
 
@@ -103,25 +112,28 @@ func do(msg *workers.Msg) {
 			if checkError = model.HTTPCheck(&h.Params, "https"); checkError != nil {
 				log.Error(errors.Wrap(checkError, "https checker failed"))
 			}
+		default:
+			log.Infof("unmatch check type, id: %d", h.ID)
+			return
 		}
 
-		if err := afterCheck(h, failedCounter, (checkError == nil)); err != nil {
+		if err := w.afterCheck(h, (checkError == nil)); err != nil {
 			log.Error(errors.Wrap(err, "after check process failed"))
 		}
 	}
 }
 
-func afterCheck(h *model.HealthCheck, counter model.FailedCounterModel, checkResult bool) error {
+func (w *Worker) afterCheck(h *model.HealthCheck, checkResult bool) error {
 	var currentFailedCount int
 	key := fmt.Sprintf("failed_counter_%d", h.ID)
 	if !checkResult {
-		c, err := counter.Increment(key)
+		c, err := w.failedCounter.Increment(key)
 		if err != nil {
 			return err
 		}
 		currentFailedCount = c
 	} else {
-		err := counter.Reset(key)
+		err := w.failedCounter.Reset(key)
 		if err != nil {
 			return err
 		}
@@ -131,9 +143,8 @@ func afterCheck(h *model.HealthCheck, counter model.FailedCounterModel, checkRes
 		checkResult = true
 	}
 
-	rm := model.NewRoutingPolicyModel(globalDB)
-	rs, err := rm.FindBy(map[string]interface{}{
-		"health_check_id": h.ID,
+	rs, err := w.routingPolicy.FindBy(map[string]interface{}{
+		healthCheckIDKey: h.ID,
 	})
 
 	if err != nil {
