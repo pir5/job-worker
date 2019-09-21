@@ -11,7 +11,7 @@ import (
 	"github.com/facebookgo/pidfile"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
-	log "github.com/sirupsen/logrus"
+	"github.com/labstack/gommon/log"
 	// Import godis package
 )
 
@@ -29,7 +29,7 @@ Start Register Server
 
 // runRegister executes sub command and return exit code.
 func runRegister(cmdFlags *GlobalFlags, args []string) error {
-	conf, err := setupWorkerComand(cmdFlags)
+	conf, err := initCommand(cmdFlags)
 	if err != nil {
 		return err
 	}
@@ -68,6 +68,16 @@ func runRegister(cmdFlags *GlobalFlags, args []string) error {
 				&v.Params,
 			)
 		}
+
+		// test data
+		t := map[string]string{
+			"hoge": "example",
+		}
+		workers.Enqueue(EnqueKey,
+			"Add",
+			t,
+		)
+
 		time.Sleep(time.Duration(conf.PollInterval) * time.Second)
 	}
 }

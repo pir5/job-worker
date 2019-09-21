@@ -22,6 +22,7 @@ type Config struct {
 	Listen       string   `toml:"listen"`
 	DB           database `toml:"database"`
 	Redis        redis    `toml:"redis"`
+	TokenAuth    *tokenAuth
 }
 
 type database struct {
@@ -53,4 +54,12 @@ func defaultConfig(c *Config) {
 	c.Redis.Port = 6379
 	c.Redis.PoolSize = 10
 	c.Redis.DB = 0
+}
+
+type tokenAuth struct {
+	Tokens []string
+}
+
+func (c Config) IsTokenAuth() bool {
+	return c.TokenAuth != nil
 }

@@ -7,8 +7,8 @@ import (
 	"strings"
 
 	"github.com/facebookgo/pidfile"
+	"github.com/labstack/gommon/log"
 	"github.com/pkg/errors"
-	log "github.com/sirupsen/logrus"
 )
 
 type GlobalFlags struct {
@@ -53,12 +53,13 @@ func (c *Command) Usage() {
 	os.Exit(2)
 }
 
-func setupWorkerComand(cmdFlags *GlobalFlags) (*Config, error) {
+func initCommand(cmdFlags *GlobalFlags) (*Config, error) {
 	conf, err := NewConfig(*cmdFlags.ConfPath)
 	if err != nil {
 		return nil, err
 	}
 
+	log.SetPrefix("health-worker")
 	log.SetOutput(os.Stdout)
 	pidfile.SetPidfilePath(*cmdFlags.PidPath)
 	if *cmdFlags.LogPath != "" {
@@ -67,9 +68,9 @@ func setupWorkerComand(cmdFlags *GlobalFlags) (*Config, error) {
 			return nil, errors.New("error opening file :" + err.Error())
 		}
 		log.SetOutput(f)
-		log.SetLevel(log.WarnLevel)
+		log.SetLevel(log.WARN)
 	} else {
-		log.SetLevel(log.DebugLevel)
+		log.SetLevel(log.DEBUG)
 	}
 
 	if err := pidfile.Write(); err != nil {

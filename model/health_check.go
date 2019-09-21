@@ -18,6 +18,9 @@ const (
 
 type HealthCheckModel interface {
 	FindBy(map[string]interface{}) (HealthChecks, error)
+	UpdateByID(string, *HealthCheck) (bool, error)
+	DeleteByID(string) (bool, error)
+	Create(*HealthCheck) error
 }
 
 func NewHealthCheckModel(db *gorm.DB) *HealthCheck {
@@ -33,7 +36,7 @@ type HealthCheck struct {
 	Type            int
 	CheckInterval   int
 	Threshould      int
-	Params          healthCheckParams `gorm:"type:json"`
+	Params          *healthCheckParams `gorm:"type:json"`
 	RoutingPolicies *RoutingPolicies
 }
 
@@ -116,4 +119,44 @@ func (h *HealthCheck) FindBy(params map[string]interface{}) (HealthChecks, error
 	}
 
 	return hs, nil
+}
+
+func (d *HealthCheck) UpdateByID(id string, newHealthCheck *HealthCheck) (bool, error) {
+	r := d.db.Where("id = ?", id).Take(&d)
+	if r.Error != nil {
+		if r.RecordNotFound() {
+			return false, nil
+		} else {
+			return false, r.Error
+		}
+	}
+
+	r = d.db.Model(&d).Updates(&newHealthCheck)
+	if r.Error != nil {
+		return false, r.Error
+	}
+	return true, nil
+}
+func (d *HealthCheck) DeleteByID(id string) (bool, error) {
+	r := d.db.Where("id = ?", id).Take(&d)
+	if r.Error != nil {
+		if r.RecordNotFound() {
+			return false, nil
+		} else {
+			return false, r.Error
+		}
+	}
+
+	r = d.db.Delete(d)
+	if r.Error != nil {
+		return false, r.Error
+	}
+	return true, nil
+}
+
+func (d *HealthCheck) Create(newHealthCheck *HealthCheck) error {
+	if err := d.db.Create(newHealthCheck).Error; err != nil {
+		return err
+	}
+	return nil
 }

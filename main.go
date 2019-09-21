@@ -25,6 +25,7 @@ import (
 var commands = []*health_worker.Command{
 	health_worker.CmdRegister,
 	health_worker.CmdWorker,
+	health_worker.CmdAPI,
 }
 
 func main() {

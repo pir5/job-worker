@@ -21,6 +21,7 @@ require (
 	github.com/json-iterator/go v1.1.7 // indirect
 	github.com/k0kubun/pp v3.0.1+incompatible
 	github.com/kr/pty v1.1.8 // indirect
+	github.com/labstack/echo v3.3.10+incompatible
 	github.com/labstack/echo/v4 v4.1.10
 	github.com/labstack/gommon v0.3.0
 	github.com/mailru/easyjson v0.0.0-20190626092158-b2ccc519800e // indirect

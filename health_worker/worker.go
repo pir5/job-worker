@@ -12,7 +12,7 @@ import (
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	"github.com/jrallison/go-workers"
-	log "github.com/sirupsen/logrus"
+	"github.com/labstack/gommon/log"
 	// Import godis package
 )
 
@@ -24,7 +24,6 @@ var CmdWorker = &Command{
 Start Worker Server
 	`,
 }
-var globalDB *gorm.DB
 
 const healthCheckIDKey = "health_check_id"
 
@@ -35,7 +34,7 @@ type Worker struct {
 
 // runWorker executes sub command and return exit code.
 func runWorker(cmdFlags *GlobalFlags, args []string) error {
-	conf, err := setupWorkerComand(cmdFlags)
+	conf, err := initCommand(cmdFlags)
 	if err != nil {
 		return err
 	}
@@ -76,14 +75,6 @@ func runWorker(cmdFlags *GlobalFlags, args []string) error {
 
 	workers.Process(EnqueKey, w.do, conf.Concurrency)
 
-	// test data
-	t := map[string]string{
-		"hoge": "example",
-	}
-	workers.Enqueue(EnqueKey,
-		"Add",
-		t,
-	)
 	// Blocks until process is told to exit via unix signal
 	workers.Run()
 
@@ -101,15 +92,15 @@ func (w *Worker) do(msg *workers.Msg) {
 	if h != nil {
 		switch h.Type {
 		case model.HealthCheckTypeTCP:
-			if checkError = model.TCPCheck(&h.Params); checkError != nil {
+			if checkError = model.TCPCheck(h.Params); checkError != nil {
 				log.Error(errors.Wrap(checkError, "tcp checker failed"))
 			}
 		case model.HealthCheckTypeHTTP:
-			if checkError = model.HTTPCheck(&h.Params, "http"); checkError != nil {
+			if checkError = model.HTTPCheck(h.Params, "http"); checkError != nil {
 				log.Error(errors.Wrap(checkError, "http checker failed"))
 			}
 		case model.HealthCheckTypeHTTPS:
-			if checkError = model.HTTPCheck(&h.Params, "https"); checkError != nil {
+			if checkError = model.HTTPCheck(h.Params, "https"); checkError != nil {
 				log.Error(errors.Wrap(checkError, "https checker failed"))
 			}
 		default:
