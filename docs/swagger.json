@@ -15,6 +15,11 @@
     "paths": {
         "/healthchecks": {
             "get": {
+                "security": [
+                    {
+                        "ID": []
+                    }
+                ],
                 "description": "get healthchecks",
                 "consumes": [
                     "application/json"
@@ -64,6 +69,11 @@
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "ID": []
+                    }
+                ],
                 "description": "create healthCheck",
                 "consumes": [
                     "application/json"
@@ -118,6 +128,11 @@
         },
         "/healthchecks/{id}": {
             "put": {
+                "security": [
+                    {
+                        "ID": []
+                    }
+                ],
                 "description": "update healthCheck",
                 "consumes": [
                     "application/json"
@@ -177,6 +192,11 @@
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "ID": []
+                    }
+                ],
                 "description": "delete healthCheck",
                 "consumes": [
                     "application/json"
@@ -228,6 +248,11 @@
         },
         "/routingpolicies": {
             "get": {
+                "security": [
+                    {
+                        "ID": []
+                    }
+                ],
                 "description": "get routingpolicies",
                 "consumes": [
                     "application/json"
@@ -277,6 +302,11 @@
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "ID": []
+                    }
+                ],
                 "description": "create healthCheck",
                 "consumes": [
                     "application/json"
@@ -331,6 +361,11 @@
         },
         "/routingpolicies/{id}": {
             "put": {
+                "security": [
+                    {
+                        "ID": []
+                    }
+                ],
                 "description": "update healthCheck",
                 "consumes": [
                     "application/json"
@@ -390,6 +425,11 @@
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "ID": []
+                    }
+                ],
                 "description": "delete healthCheck",
                 "consumes": [
                     "application/json"
