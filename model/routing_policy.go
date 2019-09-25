@@ -41,7 +41,7 @@ type RoutingPolicyModel interface {
 
 func (r *RoutingPolicy) ChangeState(checkResult bool) error {
 	// get state of records
-	record := NewRecordModel(int64(r.RecordID), client)
+	record := NewRecordModel(int64(r.RecordID), r.client)
 	currentState, err := record.GetState()
 	if err != nil {
 		return err

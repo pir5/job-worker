@@ -125,7 +125,7 @@ func NewRoutingPolicyHandler(d model.RoutingPolicyModel) *RoutingPolicyHandler {
 	}
 }
 func RoutingPolicyEndpoints(g *echo.Group, db *gorm.DB) {
-	h := NewRoutingPolicyHandler(model.NewRoutingPolicyModel(db))
+	h := NewRoutingPolicyHandler(model.NewRoutingPolicyModel(db, nil))
 	g.GET("/routingpolicies", h.getRoutingPolicies)
 	g.PUT("/routingpolicies/:id", h.updateRoutingPolicy)
 	g.DELETE("/routingpolicies/:id", h.deleteRoutingPolicy)
