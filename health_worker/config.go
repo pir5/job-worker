@@ -59,7 +59,7 @@ type Config struct {
 	Listen       string   `mapstructure:"listen"`
 	DB           database `mapstructure:"database"`
 	Redis        redis    `mapstructure:"redis"`
-	PdnsAPI      pdnsAPI  `toml:"pdnsAPI"`
+	PdnsAPI      pdnsAPI  `mapstructure:"pdnsAPI"`
 	Auth         auth    `mapstructure:"auth"`
 }
 
