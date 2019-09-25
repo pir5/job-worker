@@ -33,6 +33,7 @@ const healthCheckIDKey = "health_check_id"
 type Worker struct {
 	failedCounter model.FailedCounterModel
 	routingPolicy model.RoutingPolicyModel
+	pdnsAPIClient *operations.Client
 }
 
 // runWorker executes sub command and return exit code.
@@ -77,6 +78,7 @@ func runWorker(cmdFlags *GlobalFlags, args []string) error {
 	w := Worker{
 		failedCounter: model.NewFailedCounter(redisClient),
 		routingPolicy: model.NewRoutingPolicyModel(db, pdnsAPI),
+		pdnsAPIClient: pdnsAPI,
 	}
 
 	workers.Process(EnqueKey, w.do, conf.Concurrency)
@@ -149,6 +151,7 @@ func (w *Worker) afterCheck(h *model.HealthCheck, checkResult bool) error {
 	}
 
 	for _, r := range rs {
+		r.Client = w.pdnsAPIClient
 		err := r.ChangeState(checkResult)
 		if err != nil {
 			return err

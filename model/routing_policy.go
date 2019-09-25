@@ -16,13 +16,13 @@ const (
 func NewRoutingPolicyModel(db *gorm.DB, client *operations.Client) *RoutingPolicy {
 	return &RoutingPolicy{
 		db:     db,
-		client: client,
+		Client: client,
 	}
 }
 
 type RoutingPolicy struct {
 	db            *gorm.DB
-	client        *operations.Client
+	Client        *operations.Client
 	ID            int
 	RecordID      int
 	HealthCheckID int
@@ -41,7 +41,8 @@ type RoutingPolicyModel interface {
 
 func (r *RoutingPolicy) ChangeState(checkResult bool) error {
 	// get state of records
-	record := NewRecordModel(int64(r.RecordID), r.client)
+	fmt.Printf("[DEBUG] r: %+v\n", r)
+	record := NewRecordModel(int64(r.RecordID), r.Client)
 	currentState, err := record.GetState()
 	if err != nil {
 		return err
