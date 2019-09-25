@@ -3,6 +3,7 @@ package model
 import (
 	"fmt"
 	"github.com/jinzhu/gorm"
+	"github.com/pir5/pir5-go/dnsapi/operations"
 )
 
 const (
@@ -12,14 +13,16 @@ const (
 	RoutingPolicyTypeDetach
 )
 
-func NewRoutingPolicyModel(db *gorm.DB) *RoutingPolicy {
+func NewRoutingPolicyModel(db *gorm.DB, client *operations.Client) *RoutingPolicy {
 	return &RoutingPolicy{
-		db: db,
+		db:     db,
+		client: client,
 	}
 }
 
 type RoutingPolicy struct {
 	db            *gorm.DB
+	client        *operations.Client
 	ID            int
 	RecordID      int
 	HealthCheckID int
@@ -38,7 +41,7 @@ type RoutingPolicyModel interface {
 
 func (r *RoutingPolicy) ChangeState(checkResult bool) error {
 	// get state of records
-	record := NewRecordModel(int64(r.RecordID))
+	record := NewRecordModel(int64(r.RecordID), client)
 	currentState, err := record.GetState()
 	if err != nil {
 		return err

@@ -488,6 +488,9 @@
             "items": {
                 "type": "object",
                 "properties": {
+                    "client": {
+                        "type": "string"
+                    },
                     "db": {
                         "type": "string"
                     },
@@ -509,6 +512,9 @@
         "model.RoutingPolicy": {
             "type": "object",
             "properties": {
+                "client": {
+                    "type": "string"
+                },
                 "db": {
                     "type": "string"
                 },

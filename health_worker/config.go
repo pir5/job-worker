@@ -56,6 +56,7 @@ type Config struct {
 	Listen       string     `mapstructure:"listen"`
 	DB           database   `mapstructure:"database"`
 	Redis        redis      `mapstructure:"redis"`
+	PdnsAPI      pdnsAPI    `toml:"pdnsAPI"`
 	TokenAuth    *tokenAuth `mapstructure:"token_auth"`
 }
 
@@ -76,6 +77,11 @@ type redis struct {
 	PoolSize int    `mapstructure:"pool_size"`
 }
 
+type pdnsAPI struct {
+	Host string `mapstructure:"host"`
+	Port int    `mapstructure:"port"`
+}
+
 func defaultConfig(c *Config) {
 	c.Listen = "0.0.0.0:8080"
 	c.PollInterval = 10
@@ -88,6 +94,8 @@ func defaultConfig(c *Config) {
 	c.Redis.Port = 6379
 	c.Redis.PoolSize = 10
 	c.Redis.DB = 0
+	c.PdnsAPI.Host = "127.0.0.1"
+	c.PdnsAPI.Port = 8080
 }
 
 type tokenAuth struct {

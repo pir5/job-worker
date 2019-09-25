@@ -4,8 +4,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	httptransport "github.com/go-openapi/runtime/client"
-	"github.com/go-openapi/strfmt"
 	"github.com/pir5/pdns-api/models"
 	"github.com/pir5/pir5-go/dnsapi/operations"
 )
@@ -16,23 +14,20 @@ type RecordModel interface {
 	GetState() (bool, error)
 }
 
-func NewRecordModel(id int64) RecordModel {
+func NewRecordModel(id int64, client *operations.Client) RecordModel {
 	return &Record{
-		Addr: "127.0.0.1",
-		Port: 8080,
-		ID:   id,
+		ID:     id,
+		client: client,
 	}
 }
 
 type Record struct {
-	Addr string
-	Port int
-	ID   int64
+	ID     int64
+	client *operations.Client
 }
 
 func (r *Record) ChangeStateToEnable() error {
 	fmt.Printf("[DEBUG] change state to enable (id: %d)\n", r.ID)
-	transport := httptransport.New(fmt.Sprintf("%s:%d", r.Addr, r.Port), "v1", nil)
 	p := &operations.PutRecordsEnableIDParams{
 		ID: r.ID,
 		Record: &models.ModelRecord{
@@ -40,8 +35,8 @@ func (r *Record) ChangeStateToEnable() error {
 		},
 		Context: context.Background(),
 	}
-	client := operations.New(transport, strfmt.Default)
-	res, err := client.PutRecordsEnableID(p)
+
+	res, err := r.client.PutRecordsEnableID(p)
 	if err != nil {
 		fmt.Println(err)
 		return err
@@ -52,7 +47,6 @@ func (r *Record) ChangeStateToEnable() error {
 
 func (r *Record) ChangeStateToDisable() error {
 	fmt.Printf("[DEBUG] change state to disable (id: %d)\n", r.ID)
-	transport := httptransport.New(fmt.Sprintf("%s:%d", r.Addr, r.Port), "v1", nil)
 	p := &operations.PutRecordsDisableIDParams{
 		ID: r.ID,
 		Record: &models.ModelRecord{
@@ -60,8 +54,7 @@ func (r *Record) ChangeStateToDisable() error {
 		},
 		Context: context.Background(),
 	}
-	client := operations.New(transport, strfmt.Default)
-	res, err := client.PutRecordsDisableID(p)
+	res, err := r.client.PutRecordsDisableID(p)
 	if err != nil {
 		fmt.Println(err)
 		return err
@@ -71,13 +64,11 @@ func (r *Record) ChangeStateToDisable() error {
 }
 
 func (r *Record) GetState() (bool, error) {
-	transport := httptransport.New(fmt.Sprintf("%s:%d", r.Addr, r.Port), "v1", nil)
 	p := &operations.GetRecordsParams{
-		ID: &r.ID,
+		ID:      &r.ID,
 		Context: context.Background(),
 	}
-	client := operations.New(transport, strfmt.Default)
-	record, err := client.GetRecords(p)
+	record, err := r.client.GetRecords(p)
 	if err != nil {
 		return false, err
 	}

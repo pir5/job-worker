@@ -2,6 +2,9 @@ package health_worker
 
 import (
 	"fmt"
+	httptransport "github.com/go-openapi/runtime/client"
+	"github.com/go-openapi/strfmt"
+	"github.com/pir5/pir5-go/dnsapi/operations"
 	"os" // Import this package
 
 	goredis "github.com/go-redis/redis"
@@ -68,9 +71,12 @@ func runWorker(cmdFlags *GlobalFlags, args []string) error {
 		return err
 	}
 
+	transport := httptransport.New(fmt.Sprintf("%s:%d", conf.PdnsAPI.Host, conf.PdnsAPI.Port), "v1", nil)
+	pdnsAPI := operations.New(transport, strfmt.Default)
+
 	w := Worker{
 		failedCounter: model.NewFailedCounter(redisClient),
-		routingPolicy: model.NewRoutingPolicyModel(db),
+		routingPolicy: model.NewRoutingPolicyModel(db, pdnsAPI),
 	}
 
 	workers.Process(EnqueKey, w.do, conf.Concurrency)
