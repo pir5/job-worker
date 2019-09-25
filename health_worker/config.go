@@ -7,6 +7,9 @@ import (
 	"github.com/spf13/viper"
 )
 
+const AuthTypeHTTP = "http"
+const AuthTypeToken = "token"
+
 func BindEnvs(iface interface{}, parts ...string) {
 	ifv := reflect.ValueOf(iface)
 	ift := reflect.TypeOf(iface)
@@ -50,14 +53,14 @@ func NewConfig(confPath string) (Config, error) {
 }
 
 type Config struct {
-	WorkerID     int        `mapstructure:"worker_id"`
-	PollInterval int        `mapstructure:"poll_interval"`
-	Concurrency  int        `mapstructure:"concurrency"`
-	Listen       string     `mapstructure:"listen"`
-	DB           database   `mapstructure:"database"`
-	Redis        redis      `mapstructure:"redis"`
-	PdnsAPI      pdnsAPI    `toml:"pdnsAPI"`
-	TokenAuth    *tokenAuth `mapstructure:"token_auth"`
+	WorkerID     int      `mapstructure:"worker_id"`
+	PollInterval int      `mapstructure:"poll_interval"`
+	Concurrency  int      `mapstructure:"concurrency"`
+	Listen       string   `mapstructure:"listen"`
+	DB           database `mapstructure:"database"`
+	Redis        redis    `mapstructure:"redis"`
+	PdnsAPI      pdnsAPI  `toml:"pdnsAPI"`
+	Auth         *auth    `mapstructure:"auth"`
 }
 
 type database struct {
@@ -98,10 +101,16 @@ func defaultConfig(c *Config) {
 	c.PdnsAPI.Port = 8080
 }
 
-type tokenAuth struct {
-	Tokens []string
+type auth struct {
+	AuthType string   `mapstructure:"auth_type"` // token or http
+	Tokens   []string `mapstructure:"tokens"`
+	HttpAuth httpAuth `mapstructure:"http_auth"`
 }
 
 func (c Config) IsTokenAuth() bool {
-	return c.TokenAuth != nil
+	return c.Auth.AuthType == AuthTypeToken
+}
+
+func (c Config) IsHTTPAuth() bool {
+	return c.Auth.AuthType == AuthTypeHTTP
 }

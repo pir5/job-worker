@@ -18,6 +18,11 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/labstack/gommon/log"
+	pmiddleware "github.com/pir5/health-worker/middleware"
+)
+
+const (
+	AllowDomainsKey = "AllowDomains"
 )
 
 var CmdAPI = &Command{
@@ -81,7 +86,7 @@ func runAPI(cmdFlags *GlobalFlags, args []string) error {
 	e.Use(middleware.KeyAuthWithConfig(middleware.KeyAuthConfig{
 		Validator: func(key string, c echo.Context) (bool, error) {
 			if globalConfig.IsTokenAuth() {
-				for _, v := range globalConfig.TokenAuth.Tokens {
+				for _, v := range globalConfig.Auth.Tokens {
 					if key == v {
 						return true, nil
 					}
@@ -91,7 +96,24 @@ func runAPI(cmdFlags *GlobalFlags, args []string) error {
 
 		},
 		Skipper: func(c echo.Context) bool {
-			return !globalConfig.IsTokenAuth()
+			return !globalConfig.IsTokenAuth() && !globalConfig.IsHTTPAuth()
+		},
+	}))
+
+	e.Use(pmiddleware.HeaderAuthWithConfig(pmiddleware.HeaderAuthConfig{
+		Validator: func(username, password string, c echo.Context) (bool, error) {
+			if globalConfig.IsHTTPAuth() {
+				domains, err := globalConfig.Auth.HttpAuth.Authenticate(username, password)
+				if err != nil {
+					return false, err
+				}
+				c.Set(AllowDomainsKey, domains)
+				return true, nil
+			}
+			return false, nil
+		},
+		Skipper: func(c echo.Context) bool {
+			return !globalConfig.IsTokenAuth() && !globalConfig.IsHTTPAuth()
 		},
 	}))
 
