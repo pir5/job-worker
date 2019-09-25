@@ -72,6 +72,8 @@ definitions:
       type:
         type: integer
     type: object
+  model.RoutingPolicyModel:
+    type: object
 host: 127.0.0.1:8080
 info:
   contact: {}
@@ -249,7 +251,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/model.RoutingPolicy'
+              $ref: '#/definitions/model.RoutingPolicyModel'
             type: array
         "404":
           description: Not Found
@@ -277,7 +279,11 @@ paths:
       produces:
       - application/json
       responses:
-        "201": {}
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/model.RoutingPolicyModel'
+            type: object
         "403":
           description: Forbidden
           schema:
@@ -308,7 +314,11 @@ paths:
       produces:
       - application/json
       responses:
-        "204": {}
+        "204":
+          description: No Content
+          schema:
+            $ref: '#/definitions/model.RoutingPolicyModel'
+            type: object
         "403":
           description: Forbidden
           schema:
@@ -345,7 +355,11 @@ paths:
       produces:
       - application/json
       responses:
-        "200": {}
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.RoutingPolicyModel'
+            type: object
         "403":
           description: Forbidden
           schema:

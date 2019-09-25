@@ -256,7 +256,7 @@
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/model.RoutingPolicy"
+                                "$ref": "#/definitions/model.RoutingPolicyModel"
                             }
                         }
                     },
@@ -298,7 +298,13 @@
                     }
                 ],
                 "responses": {
-                    "201": {},
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/model.RoutingPolicyModel"
+                        }
+                    },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
@@ -353,7 +359,13 @@
                     }
                 ],
                 "responses": {
-                    "200": {},
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/model.RoutingPolicyModel"
+                        }
+                    },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
@@ -396,7 +408,13 @@
                     }
                 ],
                 "responses": {
-                    "204": {},
+                    "204": {
+                        "description": "No Content",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/model.RoutingPolicyModel"
+                        }
+                    },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
@@ -531,6 +549,9 @@
                     "type": "integer"
                 }
             }
+        },
+        "model.RoutingPolicyModel": {
+            "type": "object"
         }
     }
 }
