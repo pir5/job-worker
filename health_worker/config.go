@@ -1,14 +1,48 @@
 package health_worker
 
 import (
-	"github.com/BurntSushi/toml"
+	"reflect"
+	"strings"
+
+	"github.com/spf13/viper"
 )
+
+func BindEnvs(iface interface{}, parts ...string) {
+	ifv := reflect.ValueOf(iface)
+	ift := reflect.TypeOf(iface)
+	for i := 0; i < ift.NumField(); i++ {
+		v := ifv.Field(i)
+		t := ift.Field(i)
+		tv, ok := t.Tag.Lookup("mapstructure")
+		if !ok {
+			continue
+		}
+		switch v.Kind() {
+		case reflect.Struct:
+			BindEnvs(v.Interface(), append(parts, tv)...)
+		default:
+			viper.BindEnv(strings.Join(append(parts, tv), "."))
+		}
+	}
+}
 
 func NewConfig(confPath string) (Config, error) {
 	var conf Config
 	defaultConfig(&conf)
 
-	if _, err := toml.DecodeFile(confPath, &conf); err != nil {
+	viper.SetConfigFile(confPath)
+
+	viper.AutomaticEnv()
+	viper.SetEnvPrefix("PIR5")
+	viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
+
+	if err := viper.ReadInConfig(); err != nil {
+		return conf, err
+	}
+
+	BindEnvs(conf)
+
+	if err := viper.Unmarshal(&conf); err != nil {
 		return conf, err
 	}
 
@@ -16,30 +50,30 @@ func NewConfig(confPath string) (Config, error) {
 }
 
 type Config struct {
-	WorkerID     int
-	PollInterval int
-	Concurrency  int
-	Listen       string   `toml:"listen"`
-	DB           database `toml:"database"`
-	Redis        redis    `toml:"redis"`
-	TokenAuth    *tokenAuth
+	WorkerID     int        `mapstructure:"worker_id"`
+	PollInterval int        `mapstructure:"poll_interval"`
+	Concurrency  int        `mapstructure:"concurrency"`
+	Listen       string     `mapstructure:"listen"`
+	DB           database   `mapstructure:"database"`
+	Redis        redis      `mapstructure:"redis"`
+	TokenAuth    *tokenAuth `mapstructure:"token_auth"`
 }
 
 type database struct {
-	Host     string
-	Port     int
-	DBName   string `toml:"dbname"`
-	UserName string `toml:"username"`
-	Password string
+	Host     string `mapstructure:"host"`
+	Port     int    `mapstructure:"port"`
+	DBName   string `mapstructure:"dbname"`
+	UserName string `mapstructure:"username"`
+	Password string `mapstructure:"password"`
 }
 
 type redis struct {
-	Host     string
-	Port     int
-	DB       int
-	Password string
-	TTL      int
-	PoolSize int
+	Host     string `mapstructure:"host"`
+	Port     int    `mapstructure:"port"`
+	DB       int    `mapstructure:"db"`
+	Password string `mapstructure:"password"`
+	TTL      int    `mapstructure:"ttl"`
+	PoolSize int    `mapstructure:"pool_size"`
 }
 
 func defaultConfig(c *Config) {
