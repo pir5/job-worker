@@ -12,5 +12,306 @@
     },
     "host": "127.0.0.1:8080",
     "basePath": "/v1",
-    "paths": {}
+    "paths": {
+        "/healthchecks": {
+            "get": {
+                "description": "get healthchecks",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "get healthchecks",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "HealthCheck ID",
+                        "name": "id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Name",
+                        "name": "name",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.HealthCheck"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/health_worker.HTTPError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/health_worker.HTTPError"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "create healthCheck",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "create healthCheck",
+                "parameters": [
+                    {
+                        "description": "HealthCheck Object",
+                        "name": "healthCheck",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/model.HealthCheck"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {},
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/health_worker.HTTPError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/health_worker.HTTPError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/health_worker.HTTPError"
+                        }
+                    }
+                }
+            }
+        },
+        "/healthchecks/{id}": {
+            "put": {
+                "description": "update healthCheck",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "update healthCheck",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "HealthCheck ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "HealthCheck Object",
+                        "name": "healthCheck",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/model.HealthCheck"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {},
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/health_worker.HTTPError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/health_worker.HTTPError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/health_worker.HTTPError"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "delete healthCheck",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "delete healthCheck",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "HealthCheck ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {},
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/health_worker.HTTPError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/health_worker.HTTPError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/health_worker.HTTPError"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "health_worker.HTTPError": {
+            "type": "object"
+        },
+        "model.HealthCheck": {
+            "type": "object",
+            "properties": {
+                "checkInterval": {
+                    "type": "integer"
+                },
+                "db": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "params": {
+                    "type": "object",
+                    "$ref": "#/definitions/model.HealthCheckParams"
+                },
+                "routingPolicies": {
+                    "type": "object",
+                    "$ref": "#/definitions/model.RoutingPolicies"
+                },
+                "threshould": {
+                    "type": "integer"
+                },
+                "type": {
+                    "type": "integer"
+                }
+            }
+        },
+        "model.HealthCheckParams": {
+            "type": "object",
+            "properties": {
+                "addr": {
+                    "type": "string"
+                },
+                "hostName": {
+                    "type": "string"
+                },
+                "path": {
+                    "type": "string"
+                },
+                "port": {
+                    "type": "integer"
+                },
+                "protocol": {
+                    "type": "integer"
+                },
+                "searchWord": {
+                    "type": "string"
+                },
+                "timeout": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.RoutingPolicies": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "db": {
+                        "type": "string"
+                    },
+                    "healthCheckID": {
+                        "type": "integer"
+                    },
+                    "id": {
+                        "type": "integer"
+                    },
+                    "recordID": {
+                        "type": "integer"
+                    },
+                    "type": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        "model.RoutingPolicy": {
+            "type": "object",
+            "properties": {
+                "db": {
+                    "type": "string"
+                },
+                "healthCheckID": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "recordID": {
+                    "type": "integer"
+                },
+                "type": {
+                    "type": "integer"
+                }
+            }
+        }
+    }
 }

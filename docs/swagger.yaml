@@ -1,4 +1,73 @@
 basePath: /v1
+definitions:
+  health_worker.HTTPError:
+    type: object
+  model.HealthCheck:
+    properties:
+      checkInterval:
+        type: integer
+      db:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      params:
+        $ref: '#/definitions/model.HealthCheckParams'
+        type: object
+      routingPolicies:
+        $ref: '#/definitions/model.RoutingPolicies'
+        type: object
+      threshould:
+        type: integer
+      type:
+        type: integer
+    type: object
+  model.HealthCheckParams:
+    properties:
+      addr:
+        type: string
+      hostName:
+        type: string
+      path:
+        type: string
+      port:
+        type: integer
+      protocol:
+        type: integer
+      searchWord:
+        type: string
+      timeout:
+        type: string
+    type: object
+  model.RoutingPolicies:
+    items:
+      properties:
+        db:
+          type: string
+        healthCheckID:
+          type: integer
+        id:
+          type: integer
+        recordID:
+          type: integer
+        type:
+          type: integer
+      type: object
+    type: array
+  model.RoutingPolicy:
+    properties:
+      db:
+        type: string
+      healthCheckID:
+        type: integer
+      id:
+        type: integer
+      recordID:
+        type: integer
+      type:
+        type: integer
+    type: object
 host: 127.0.0.1:8080
 info:
   contact: {}
@@ -8,5 +77,139 @@ info:
     url: http://www.apache.org/licenses/LICENSE-2.0.html
   title: health-worker
   version: "1.0"
-paths: {}
+paths:
+  /healthchecks:
+    get:
+      consumes:
+      - application/json
+      description: get healthchecks
+      parameters:
+      - description: HealthCheck ID
+        in: query
+        name: id
+        type: integer
+      - description: Name
+        in: query
+        name: name
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.HealthCheck'
+            type: array
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/health_worker.HTTPError'
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/health_worker.HTTPError'
+            type: object
+      summary: get healthchecks
+    post:
+      consumes:
+      - application/json
+      description: create healthCheck
+      parameters:
+      - description: HealthCheck Object
+        in: body
+        name: healthCheck
+        required: true
+        schema:
+          $ref: '#/definitions/model.HealthCheck'
+          type: object
+      produces:
+      - application/json
+      responses:
+        "201": {}
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/health_worker.HTTPError'
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/health_worker.HTTPError'
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/health_worker.HTTPError'
+            type: object
+      summary: create healthCheck
+  /healthchecks/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: delete healthCheck
+      parameters:
+      - description: HealthCheck ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204": {}
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/health_worker.HTTPError'
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/health_worker.HTTPError'
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/health_worker.HTTPError'
+            type: object
+      summary: delete healthCheck
+    put:
+      consumes:
+      - application/json
+      description: update healthCheck
+      parameters:
+      - description: HealthCheck ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: HealthCheck Object
+        in: body
+        name: healthCheck
+        required: true
+        schema:
+          $ref: '#/definitions/model.HealthCheck'
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200": {}
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/health_worker.HTTPError'
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/health_worker.HTTPError'
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/health_worker.HTTPError'
+            type: object
+      summary: update healthCheck
 swagger: "2.0"
