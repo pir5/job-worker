@@ -18,6 +18,9 @@
                 "security": [
                     {
                         "ID": []
+                    },
+                    {
+                        "Secret": []
                     }
                 ],
                 "description": "get healthchecks",
@@ -72,6 +75,9 @@
                 "security": [
                     {
                         "ID": []
+                    },
+                    {
+                        "Secret": []
                     }
                 ],
                 "description": "create healthCheck",
@@ -131,6 +137,9 @@
                 "security": [
                     {
                         "ID": []
+                    },
+                    {
+                        "Secret": []
                     }
                 ],
                 "description": "update healthCheck",
@@ -195,6 +204,9 @@
                 "security": [
                     {
                         "ID": []
+                    },
+                    {
+                        "Secret": []
                     }
                 ],
                 "description": "delete healthCheck",
@@ -251,6 +263,9 @@
                 "security": [
                     {
                         "ID": []
+                    },
+                    {
+                        "Secret": []
                     }
                 ],
                 "description": "get routingpolicies",
@@ -305,6 +320,9 @@
                 "security": [
                     {
                         "ID": []
+                    },
+                    {
+                        "Secret": []
                     }
                 ],
                 "description": "create healthCheck",
@@ -364,6 +382,9 @@
                 "security": [
                     {
                         "ID": []
+                    },
+                    {
+                        "Secret": []
                     }
                 ],
                 "description": "update healthCheck",
@@ -428,6 +449,9 @@
                 "security": [
                     {
                         "ID": []
+                    },
+                    {
+                        "Secret": []
                     }
                 ],
                 "description": "delete healthCheck",

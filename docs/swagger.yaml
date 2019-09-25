@@ -119,6 +119,7 @@ paths:
             type: object
       security:
       - ID: []
+      - Secret: []
       summary: get healthchecks
     post:
       consumes:
@@ -157,6 +158,7 @@ paths:
             type: object
       security:
       - ID: []
+      - Secret: []
       summary: create healthCheck
   /healthchecks/{id}:
     delete:
@@ -194,6 +196,7 @@ paths:
             type: object
       security:
       - ID: []
+      - Secret: []
       summary: delete healthCheck
     put:
       consumes:
@@ -237,6 +240,7 @@ paths:
             type: object
       security:
       - ID: []
+      - Secret: []
       summary: update healthCheck
   /routingpolicies:
     get:
@@ -273,6 +277,7 @@ paths:
             type: object
       security:
       - ID: []
+      - Secret: []
       summary: get routingpolicies
     post:
       consumes:
@@ -311,6 +316,7 @@ paths:
             type: object
       security:
       - ID: []
+      - Secret: []
       summary: create healthCheck
   /routingpolicies/{id}:
     delete:
@@ -348,6 +354,7 @@ paths:
             type: object
       security:
       - ID: []
+      - Secret: []
       summary: delete healthCheck
     put:
       consumes:
@@ -391,6 +398,7 @@ paths:
             type: object
       security:
       - ID: []
+      - Secret: []
       summary: update healthCheck
 securityDefinitions:
   ID:

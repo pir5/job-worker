@@ -12,7 +12,7 @@ import (
 // @Summary get healthchecks
 // @Description get healthchecks
 // @Security ID
-// @SecuritySecret
+// @Security Secret
 // @Accept  json
 // @Produce  json
 // @Param id query int false "HealthCheck ID"
@@ -46,7 +46,7 @@ func (h *HealthCheckHandler) getHealthChecks(c echo.Context) error {
 // @Summary update healthCheck
 // @Description update healthCheck
 // @Security ID
-// @SecuritySecret
+// @Security Secret
 // @Accept  json
 // @Produce  json
 // @Param id path string true "HealthCheck ID"
@@ -76,7 +76,7 @@ func (h *HealthCheckHandler) updateHealthCheck(c echo.Context) error {
 // @Summary delete healthCheck
 // @Description delete healthCheck
 // @Security ID
-// @SecuritySecret
+// @Security Secret
 // @Accept  json
 // @Produce  json
 // @Param id path string true "HealthCheck ID"
@@ -102,7 +102,7 @@ func (h *HealthCheckHandler) deleteHealthCheck(c echo.Context) error {
 // @Summary create healthCheck
 // @Description create healthCheck
 // @Security ID
-// @SecuritySecret
+// @Security Secret
 // @Accept  json
 // @Produce  json
 // @Param healthCheck body model.HealthCheck true "HealthCheck Object"
