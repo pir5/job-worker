@@ -11,6 +11,8 @@ import (
 // getRoutingPolicys is getting routingpolicies.
 // @Summary get routingpolicies
 // @Description get routingpolicies
+// @Security ID
+// @SecuritySecret
 // @Accept  json
 // @Produce  json
 // @Param id query int false "RoutingPolicy ID"
@@ -43,6 +45,8 @@ func (h *RoutingPolicyHandler) getRoutingPolicies(c echo.Context) error {
 // updateRoutingPolicy is update healthCheck.
 // @Summary update healthCheck
 // @Description update healthCheck
+// @Security ID
+// @SecuritySecret
 // @Accept  json
 // @Produce  json
 // @Param id path string true "RoutingPolicy ID"
@@ -71,6 +75,8 @@ func (h *RoutingPolicyHandler) updateRoutingPolicy(c echo.Context) error {
 // deleteRoutingPolicy is delete healthCheck.
 // @Summary delete healthCheck
 // @Description delete healthCheck
+// @Security ID
+// @SecuritySecret
 // @Accept  json
 // @Produce  json
 // @Param id path string true "RoutingPolicy ID"
@@ -95,6 +101,8 @@ func (h *RoutingPolicyHandler) deleteRoutingPolicy(c echo.Context) error {
 // createRoutingPolicy is create healthCheck.
 // @Summary create healthCheck
 // @Description create healthCheck
+// @Security ID
+// @SecuritySecret
 // @Accept  json
 // @Produce  json
 // @Param healthCheck body model.RoutingPolicy true "RoutingPolicy Object"
