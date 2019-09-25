@@ -30,6 +30,7 @@ require (
 	github.com/simonz05/godis v0.0.0-20120922175248-109ffb8e3738
 	github.com/sirupsen/logrus v1.2.0
 	github.com/sonod/go-workers v0.0.0-20171219091411-9fae573cbcc8
+	github.com/spf13/viper v1.4.0
 	github.com/swaggo/echo-swagger v0.0.0-20190329130007-1219b460a043
 	github.com/swaggo/files v0.0.0-20190704085106-630677cd5c14 // indirect
 	github.com/swaggo/gin-swagger v1.2.0 // indirect
