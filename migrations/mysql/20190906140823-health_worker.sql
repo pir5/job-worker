@@ -20,5 +20,4 @@ CREATE TABLE routing_policies (
   PRIMARY KEY (id)
 ) Engine=InnoDB CHARACTER SET 'latin1';
 
-CREATE UNIQUE INDEX routing_policies_health_check_id ON routing_policies(health_check_id);
 -- +migrate Down
