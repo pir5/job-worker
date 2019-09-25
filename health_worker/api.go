@@ -22,7 +22,7 @@ import (
 
 var CmdAPI = &Command{
 	Run:       runAPI,
-	UsageLine: "register",
+	UsageLine: "api",
 	Short:     "Start API Server",
 	Long: `
 Start API Server
