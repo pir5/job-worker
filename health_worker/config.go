@@ -60,7 +60,7 @@ type Config struct {
 	DB           database `mapstructure:"database"`
 	Redis        redis    `mapstructure:"redis"`
 	PdnsAPI      pdnsAPI  `toml:"pdnsAPI"`
-	Auth         *auth    `mapstructure:"auth"`
+	Auth         auth    `mapstructure:"auth"`
 }
 
 type database struct {
