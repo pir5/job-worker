@@ -8,6 +8,23 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
+type RecordStub struct {
+	ID          int
+	recordState bool
+}
+
+func (r *RecordStub) ChangeStateToEnable() error {
+	return nil
+}
+
+func (r *RecordStub) ChangeStateToDisable() error {
+	return nil
+}
+
+func (r *RecordStub) GetState() bool {
+	return r.recordState
+}
+
 func TestRoutingPolicy_FindBy(t *testing.T) {
 	type fields struct {
 		ID            int
@@ -121,44 +138,91 @@ func TestRoutingPolicy_FindBy(t *testing.T) {
 func TestRoutingPolicy_ChangeState(t *testing.T) {
 	tests := []struct {
 		name          string
-		checkResut    bool
+		checkResult   bool
 		healthCheckID int
+		recordState   bool
 	}{
 		{
 			name:          "RoutingPolicyTypeFailOverPrimary, checkResult is true",
 			healthCheckID: RoutingPolicyTypeFailOverPrimary,
-			checkResut:    true,
+			checkResult:   true,
+			recordState:   true,
+		},
+		{
+			name:          "RoutingPolicyTypeFailOverPrimary, checkResult is true",
+			healthCheckID: RoutingPolicyTypeFailOverPrimary,
+			checkResult:   true,
+			recordState:   false,
 		},
 		{
 			name:          "RoutingPolicyTypeFailOverPrimary, checkResult is false",
 			healthCheckID: RoutingPolicyTypeFailOverPrimary,
-			checkResut:    false,
+			checkResult:   false,
+			recordState:   true,
+		},
+		{
+			name:          "RoutingPolicyTypeFailOverPrimary, checkResult is false",
+			healthCheckID: RoutingPolicyTypeFailOverPrimary,
+			checkResult:   false,
+			recordState:   false,
 		},
 		{
 			name:          "RoutingPolicyTypeDetach, checkResult is true",
 			healthCheckID: RoutingPolicyTypeDetach,
-			checkResut:    true,
+			checkResult:   true,
+			recordState:   true,
+		},
+		{
+			name:          "RoutingPolicyTypeDetach, checkResult is true",
+			healthCheckID: RoutingPolicyTypeDetach,
+			checkResult:   true,
+			recordState:   false,
 		},
 		{
 			name:          "RoutingPolicyTypeDetach, checkResult is false",
 			healthCheckID: RoutingPolicyTypeDetach,
-			checkResut:    false,
+			checkResult:   false,
+			recordState:   true,
+		},
+		{
+			name:          "RoutingPolicyTypeDetach, checkResult is false",
+			healthCheckID: RoutingPolicyTypeDetach,
+			checkResult:   false,
+			recordState:   false,
 		},
 		{
 			name:          "RoutingPolicyTypeFailOverSecondly, checkResult is true",
 			healthCheckID: RoutingPolicyTypeFailOverSecondly,
-			checkResut:    true,
+			checkResult:   true,
+			recordState:   true,
+		},
+		{
+			name:          "RoutingPolicyTypeFailOverSecondly, checkResult is true",
+			healthCheckID: RoutingPolicyTypeFailOverSecondly,
+			checkResult:   true,
+			recordState:   false,
 		},
 		{
 			name:          "RoutingPolicyTypeFailOverSecondly, checkResult is false",
 			healthCheckID: RoutingPolicyTypeFailOverSecondly,
-			checkResut:    false,
+			checkResult:   false,
+			recordState:   true,
+		},
+		{
+			name:          "RoutingPolicyTypeFailOverSecondly, checkResult is false",
+			healthCheckID: RoutingPolicyTypeFailOverSecondly,
+			checkResult:   false,
+			recordState:   false,
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			h := &RoutingPolicy{}
-			if err := h.ChangeState(tt.checkResut); err != nil {
+			h := &RoutingPolicy{
+				Record: &RecordStub{
+					recordState: tt.recordState,
+				},
+			}
+			if err := h.ChangeState(tt.checkResult); err != nil {
 				t.Errorf("RoutingPolicy.ChangeState failed: %s", err)
 			}
 		})
