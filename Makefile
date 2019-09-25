@@ -43,6 +43,11 @@ build_binary:
 	$(GO) build $(BUILDOPTS) -ldflags="-s -w" -o $(BINARY)
 build_image:
 	mkdir -p build/linux/amd64 && make build_binary BINARY=build/linux/amd64/health-worker SYSTEM="GOOS=linux GOARCH=amd64" BUILDOPTS=""
-	docker build -f Dockerfile.worker   -t health-worker .
-	docker build -f Dockerfile.register -t health-worker-register .
-	docker build -f Dockerfile.api      -t health-worker-api .
+	docker build -f Dockerfile.worker   -t pir5/health-worker .
+	docker build -f Dockerfile.register -t pir5/health-worker-register .
+	docker build -f Dockerfile.api      -t pir5/health-worker-api .
+
+docker_push: build_image
+	docker push pir5/health-worker:latest
+	docker push pir5/health-worker-register:latest
+	docker push pir5/health-worker-api:latest
