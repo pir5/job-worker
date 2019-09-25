@@ -1,6 +1,0 @@
-FROM debian:stable-slim
-
-ADD ./build/linux/amd64/health-worker /health-worker
-
-EXPOSE 8080 8080/tcp
-ENTRYPOINT ["/health-worker", "register"]
