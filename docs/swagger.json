@@ -15,6 +15,14 @@
     "paths": {
         "/healthchecks": {
             "get": {
+                "security": [
+                    {
+                        "ID": []
+                    },
+                    {
+                        "Secret": []
+                    }
+                ],
                 "description": "get healthchecks",
                 "consumes": [
                     "application/json"
@@ -64,6 +72,14 @@
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "ID": []
+                    },
+                    {
+                        "Secret": []
+                    }
+                ],
                 "description": "create healthCheck",
                 "consumes": [
                     "application/json"
@@ -118,6 +134,14 @@
         },
         "/healthchecks/{id}": {
             "put": {
+                "security": [
+                    {
+                        "ID": []
+                    },
+                    {
+                        "Secret": []
+                    }
+                ],
                 "description": "update healthCheck",
                 "consumes": [
                     "application/json"
@@ -177,6 +201,14 @@
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "ID": []
+                    },
+                    {
+                        "Secret": []
+                    }
+                ],
                 "description": "delete healthCheck",
                 "consumes": [
                     "application/json"
@@ -228,6 +260,14 @@
         },
         "/routingpolicies": {
             "get": {
+                "security": [
+                    {
+                        "ID": []
+                    },
+                    {
+                        "Secret": []
+                    }
+                ],
                 "description": "get routingpolicies",
                 "consumes": [
                     "application/json"
@@ -256,7 +296,7 @@
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/model.RoutingPolicy"
+                                "$ref": "#/definitions/model.RoutingPolicyModel"
                             }
                         }
                     },
@@ -277,6 +317,14 @@
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "ID": []
+                    },
+                    {
+                        "Secret": []
+                    }
+                ],
                 "description": "create healthCheck",
                 "consumes": [
                     "application/json"
@@ -298,7 +346,13 @@
                     }
                 ],
                 "responses": {
-                    "201": {},
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/model.RoutingPolicyModel"
+                        }
+                    },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
@@ -325,6 +379,14 @@
         },
         "/routingpolicies/{id}": {
             "put": {
+                "security": [
+                    {
+                        "ID": []
+                    },
+                    {
+                        "Secret": []
+                    }
+                ],
                 "description": "update healthCheck",
                 "consumes": [
                     "application/json"
@@ -353,7 +415,13 @@
                     }
                 ],
                 "responses": {
-                    "200": {},
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/model.RoutingPolicyModel"
+                        }
+                    },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
@@ -378,6 +446,14 @@
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "ID": []
+                    },
+                    {
+                        "Secret": []
+                    }
+                ],
                 "description": "delete healthCheck",
                 "consumes": [
                     "application/json"
@@ -396,7 +472,13 @@
                     }
                 ],
                 "responses": {
-                    "204": {},
+                    "204": {
+                        "description": "No Content",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/model.RoutingPolicyModel"
+                        }
+                    },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
@@ -531,6 +613,21 @@
                     "type": "integer"
                 }
             }
+        },
+        "model.RoutingPolicyModel": {
+            "type": "object"
+        }
+    },
+    "securityDefinitions": {
+        "ID": {
+            "type": "apiKey",
+            "name": "PIR5-ID",
+            "in": "header"
+        },
+        "Secret": {
+            "type": "apiKey",
+            "name": "PIR5-SECRET",
+            "in": "header"
         }
     }
 }
