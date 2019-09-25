@@ -225,6 +225,201 @@
                     }
                 }
             }
+        },
+        "/routingpolicies": {
+            "get": {
+                "description": "get routingpolicies",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "get routingpolicies",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "RoutingPolicy ID",
+                        "name": "id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Name",
+                        "name": "name",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.RoutingPolicy"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/health_worker.HTTPError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/health_worker.HTTPError"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "create healthCheck",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "create healthCheck",
+                "parameters": [
+                    {
+                        "description": "RoutingPolicy Object",
+                        "name": "healthCheck",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/model.RoutingPolicy"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {},
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/health_worker.HTTPError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/health_worker.HTTPError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/health_worker.HTTPError"
+                        }
+                    }
+                }
+            }
+        },
+        "/routingpolicies/{id}": {
+            "put": {
+                "description": "update healthCheck",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "update healthCheck",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "RoutingPolicy ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "RoutingPolicy Object",
+                        "name": "healthCheck",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/model.RoutingPolicy"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {},
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/health_worker.HTTPError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/health_worker.HTTPError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/health_worker.HTTPError"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "delete healthCheck",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "delete healthCheck",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "RoutingPolicy ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {},
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/health_worker.HTTPError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/health_worker.HTTPError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/health_worker.HTTPError"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
