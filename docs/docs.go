@@ -100,7 +100,13 @@ var doc = `{
                     }
                 ],
                 "responses": {
-                    "201": {},
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/model.HealthCheck"
+                        }
+                    },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
@@ -155,7 +161,13 @@ var doc = `{
                     }
                 ],
                 "responses": {
-                    "200": {},
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/model.HealthCheck"
+                        }
+                    },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
@@ -198,7 +210,13 @@ var doc = `{
                     }
                 ],
                 "responses": {
-                    "204": {},
+                    "204": {
+                        "description": "No Content",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/model.HealthCheck"
+                        }
+                    },
                     "403": {
                         "description": "Forbidden",
                         "schema": {

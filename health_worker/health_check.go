@@ -47,7 +47,7 @@ func (h *HealthCheckHandler) getHealthChecks(c echo.Context) error {
 // @Produce  json
 // @Param id path string true "HealthCheck ID"
 // @Param healthCheck body model.HealthCheck true "HealthCheck Object"
-// @Success 200
+// @Success 200 {object} model.HealthCheck
 // @Failure 403 {object} health_worker.HTTPError
 // @Failure 404 {object} health_worker.HTTPError
 // @Failure 500 {object} health_worker.HTTPError
@@ -74,7 +74,7 @@ func (h *HealthCheckHandler) updateHealthCheck(c echo.Context) error {
 // @Accept  json
 // @Produce  json
 // @Param id path string true "HealthCheck ID"
-// @Success 204
+// @Success 204 {object} model.HealthCheck
 // @Failure 403 {object} health_worker.HTTPError
 // @Failure 404 {object} health_worker.HTTPError
 // @Failure 500 {object} health_worker.HTTPError
@@ -98,7 +98,7 @@ func (h *HealthCheckHandler) deleteHealthCheck(c echo.Context) error {
 // @Accept  json
 // @Produce  json
 // @Param healthCheck body model.HealthCheck true "HealthCheck Object"
-// @Success 201
+// @Success 201 {object} model.HealthCheck
 // @Failure 403 {object} health_worker.HTTPError
 // @Failure 404 {object} health_worker.HTTPError
 // @Failure 500 {object} health_worker.HTTPError
