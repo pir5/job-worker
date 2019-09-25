@@ -29,6 +29,8 @@ run_register:
 	$(GO) run main.go --config ./misc/develop.toml register
 run_worker:
 	$(GO) run main.go --config ./misc/develop.toml worker
+run_api: swag
+	$(GO) run main.go --config ./misc/develop.toml api
 
 test: ## Run test
 	@echo "$(INFO_COLOR)==> $(RESET)$(BOLD)Testing$(RESET)"
