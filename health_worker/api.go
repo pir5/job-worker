@@ -103,6 +103,7 @@ func runAPI(cmdFlags *GlobalFlags, args []string) error {
 
 	v1 := e.Group("/v1")
 	HealthCheckEndpoints(v1, db.Set("gorm:association_autoupdate", false).Set("gorm:association_autocreate", false))
+	RoutingPolicyEndpoints(v1, db.Set("gorm:association_autoupdate", false).Set("gorm:association_autocreate", false))
 	e.GET("/", func(c echo.Context) error {
 		return c.String(http.StatusOK, "Hello! HealthWorker!!1")
 	})

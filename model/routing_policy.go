@@ -71,3 +71,44 @@ func (h *RoutingPolicy) FindBy(params map[string]interface{}) (RoutingPolicies, 
 
 	return hs, nil
 }
+
+func (d *RoutingPolicy) UpdateByID(id string, newRoutingPolicy *RoutingPolicy) (bool, error) {
+	r := d.db.Where("id = ?", id).Take(&d)
+	if r.Error != nil {
+		if r.RecordNotFound() {
+			return false, nil
+		} else {
+			return false, r.Error
+		}
+	}
+
+	r = d.db.Model(&d).Updates(&newRoutingPolicy)
+	if r.Error != nil {
+		return false, r.Error
+	}
+	return true, nil
+}
+
+func (d *RoutingPolicy) DeleteByID(id string) (bool, error) {
+	r := d.db.Where("id = ?", id).Take(&d)
+	if r.Error != nil {
+		if r.RecordNotFound() {
+			return false, nil
+		} else {
+			return false, r.Error
+		}
+	}
+
+	r = d.db.Delete(d)
+	if r.Error != nil {
+		return false, r.Error
+	}
+	return true, nil
+}
+
+func (d *RoutingPolicy) Create(newRoutingPolicy *RoutingPolicy) error {
+	if err := d.db.Create(newRoutingPolicy).Error; err != nil {
+		return err
+	}
+	return nil
+}
