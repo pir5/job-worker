@@ -117,3 +117,50 @@ func TestRoutingPolicy_FindBy(t *testing.T) {
 		})
 	}
 }
+
+func TestRoutingPolicy_ChangeState(t *testing.T) {
+	tests := []struct {
+		name          string
+		checkResut    bool
+		healthCheckID int
+	}{
+		{
+			name:          "RoutingPolicyTypeFailOverPrimary, checkResult is true",
+			healthCheckID: RoutingPolicyTypeFailOverPrimary,
+			checkResut:    true,
+		},
+		{
+			name:          "RoutingPolicyTypeFailOverPrimary, checkResult is false",
+			healthCheckID: RoutingPolicyTypeFailOverPrimary,
+			checkResut:    false,
+		},
+		{
+			name:          "RoutingPolicyTypeDetach, checkResult is true",
+			healthCheckID: RoutingPolicyTypeDetach,
+			checkResut:    true,
+		},
+		{
+			name:          "RoutingPolicyTypeDetach, checkResult is false",
+			healthCheckID: RoutingPolicyTypeDetach,
+			checkResut:    false,
+		},
+		{
+			name:          "RoutingPolicyTypeFailOverSecondly, checkResult is true",
+			healthCheckID: RoutingPolicyTypeFailOverSecondly,
+			checkResut:    true,
+		},
+		{
+			name:          "RoutingPolicyTypeFailOverSecondly, checkResult is false",
+			healthCheckID: RoutingPolicyTypeFailOverSecondly,
+			checkResut:    false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			h := &RoutingPolicy{}
+			if err := h.ChangeState(tt.checkResut); err != nil {
+				t.Errorf("RoutingPolicy.ChangeState failed: %s", err)
+			}
+		})
+	}
+}
