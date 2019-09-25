@@ -121,3 +121,7 @@ func runAPI(cmdFlags *GlobalFlags, args []string) error {
 func status(c echo.Context) error {
 	return c.String(http.StatusOK, "OK")
 }
+
+type HTTPError struct {
+	echo.HTTPError
+}
