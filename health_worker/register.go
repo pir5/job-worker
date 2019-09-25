@@ -70,26 +70,26 @@ func runRegister(cmdFlags *GlobalFlags, args []string) error {
 		}
 
 		// test data
-		t := model.HealthCheck{
-			Name:            "test",
-			Type:            0,
-			CheckInterval:   10,
-			Threshould:      5,
-			Params:          &model.HealthCheckParams{
-				Addr:       "127.0.0.1",
-				Port:       8080,
-				HostName:   "localhost",
-				Path:       "swagger/index.html",
-				SearchWord: "",
-				Timeout:    1000000000,
-			},
-			RoutingPolicies: nil,
-		}
-		
-		workers.Enqueue(EnqueKey,
-			"Add",
-			t,
-		)
+		//t := model.HealthCheck{
+		//	Name:          "test",
+		//	Type:          0,
+		//	CheckInterval: 10,
+		//	Threshould:    5,
+		//	Params: &model.HealthCheckParams{
+		//		Addr:       "127.0.0.1",
+		//		Port:       8080,
+		//		HostName:   "localhost",
+		//		Path:       "swagger/index.html",
+		//		SearchWord: "",
+		//		Timeout:    1000000000,
+		//	},
+		//	RoutingPolicies: nil,
+		//}
+		//
+		//workers.Enqueue(EnqueKey,
+		//	"Add",
+		//	t,
+		//)
 
 		time.Sleep(time.Duration(conf.PollInterval) * time.Second)
 	}
