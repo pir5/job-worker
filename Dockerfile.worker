@@ -1,0 +1,6 @@
+FROM debian:stable-slim
+
+ADD ./build/linux/amd64/health-worker /health-worker
+
+EXPOSE 8081 8081/tcp
+ENTRYPOINT ["/health-worker", "server"]
