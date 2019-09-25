@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-func TCPCheck(params *healthCheckParams) error {
+func TCPCheck(params *HealthCheckParams) error {
 	d := net.Dialer{Timeout: params.Timeout}
 	l4 := fmt.Sprintf("%s:%d", params.Addr, params.Port)
 	conn, err := d.Dial("tcp", l4)
@@ -21,7 +21,7 @@ func TCPCheck(params *healthCheckParams) error {
 	return nil
 }
 
-func HTTPCheck(params *healthCheckParams, protocol string) error {
+func HTTPCheck(params *HealthCheckParams, protocol string) error {
 	url := fmt.Sprintf("%s://%s:%d/%s", protocol, params.Addr, params.Port, params.Path)
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {

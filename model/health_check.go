@@ -36,13 +36,13 @@ type HealthCheck struct {
 	Type            int
 	CheckInterval   int
 	Threshould      int
-	Params          *healthCheckParams `gorm:"type:json"`
+	Params          *HealthCheckParams `gorm:"type:json"`
 	RoutingPolicies *RoutingPolicies
 }
 
 type HealthChecks []HealthCheck
 
-type healthCheckParams struct {
+type HealthCheckParams struct {
 	protocol   int
 	Addr       string
 	Port       int
@@ -54,7 +54,7 @@ type healthCheckParams struct {
 
 // http://qiita.com/roothybrid7/items/2db3ccbf46f2bdb9cd00
 
-func (s *healthCheckParams) ToJSON() (string, error) {
+func (s *HealthCheckParams) ToJSON() (string, error) {
 	r, err := json.Marshal(s)
 	if err != nil {
 		return "", err
@@ -63,12 +63,12 @@ func (s *healthCheckParams) ToJSON() (string, error) {
 }
 
 // Value SqlDriver interface:https://golang.org/pkg/database/sql/driver/#Valuer
-func (s *healthCheckParams) Value() (driver.Value, error) {
+func (s *HealthCheckParams) Value() (driver.Value, error) {
 	return s.ToJSON()
 }
 
 // Scan SqlDriver interface:https://golang.org/pkg/database/sql/#Scanner
-func (s *healthCheckParams) Scan(value interface{}) (err error) {
+func (s *HealthCheckParams) Scan(value interface{}) (err error) {
 	switch v := value.(type) {
 	case string:
 		if err := json.Unmarshal([]byte(v), s); err != nil {

@@ -16,7 +16,7 @@ func TestHealthCheck_FindBy(t *testing.T) {
 		Type            int
 		CheckInterval   int
 		Threshould      int
-		Params          *healthCheckParams
+		Params          *HealthCheckParams
 		RoutingPolicies RoutingPolicies
 	}
 	type args struct {
@@ -62,7 +62,7 @@ func TestHealthCheck_FindBy(t *testing.T) {
 					Type:          2,
 					CheckInterval: 10,
 					Threshould:    3,
-					Params: &healthCheckParams{
+					Params: &HealthCheckParams{
 						Addr: "test.com",
 					},
 				},
@@ -140,7 +140,7 @@ func TestHealthCheck_UpdateByID(t *testing.T) {
 		Type            int
 		CheckInterval   int
 		Threshould      int
-		Params          *healthCheckParams
+		Params          *HealthCheckParams
 		RoutingPolicies RoutingPolicies
 	}
 	type args struct {
@@ -258,7 +258,7 @@ func TestHealthCheck_DeleteByID(t *testing.T) {
 		Type            int
 		CheckInterval   int
 		Threshould      int
-		Params          *healthCheckParams
+		Params          *HealthCheckParams
 		RoutingPolicies RoutingPolicies
 	}
 	type args struct {
@@ -372,7 +372,7 @@ func TestHealthCheck_Create(t *testing.T) {
 		Type            int
 		CheckInterval   int
 		Threshould      int
-		Params          *healthCheckParams
+		Params          *HealthCheckParams
 		RoutingPolicies RoutingPolicies
 	}
 	type args struct {

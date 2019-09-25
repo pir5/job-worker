@@ -14,7 +14,7 @@ import (
 
 func TestTCPChecker_Check(t *testing.T) {
 	type fields struct {
-		params healthCheckParams
+		params HealthCheckParams
 	}
 	tests := []struct {
 		name    string
@@ -24,7 +24,7 @@ func TestTCPChecker_Check(t *testing.T) {
 		{
 			name: "ok",
 			fields: fields{
-				params: healthCheckParams{
+				params: HealthCheckParams{
 					Addr: "127.0.0.1",
 					Port: 3000,
 				},
@@ -33,7 +33,7 @@ func TestTCPChecker_Check(t *testing.T) {
 		{
 			name: "ng",
 			fields: fields{
-				params: healthCheckParams{
+				params: HealthCheckParams{
 					Addr: "127.0.0.1",
 					Port: 3001,
 				},
@@ -78,7 +78,7 @@ var testHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) 
 
 func Test_httpCheck(t *testing.T) {
 	type args struct {
-		params   *healthCheckParams
+		params   *HealthCheckParams
 		protocol string
 	}
 	tests := []struct {
@@ -89,14 +89,14 @@ func Test_httpCheck(t *testing.T) {
 		{
 			name: "ok",
 			args: args{
-				params:   &healthCheckParams{},
+				params:   &HealthCheckParams{},
 				protocol: "http",
 			},
 		},
 		{
 			name: "ng",
 			args: args{
-				params:   &healthCheckParams{},
+				params:   &HealthCheckParams{},
 				protocol: "https",
 			},
 			wantErr: true,
