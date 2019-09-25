@@ -30,7 +30,7 @@ var commands = []*health_worker.Command{
 
 func main() {
 	cmdFlags := health_worker.GlobalFlags{}
-	cmdFlags.ConfPath = flag.String("config", "/etc/health-worker/worker.conf", "config file path")
+	cmdFlags.ConfPath = flag.String("config", "/etc/health-worker/worker.toml", "config file path")
 	cmdFlags.PidPath = flag.String("pid", "/tmp/health-worker.pid", "pid file path")
 	cmdFlags.LogPath = flag.String("logfile", "", "log file path")
 	flag.Usage = usage
