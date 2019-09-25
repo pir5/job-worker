@@ -376,4 +376,13 @@ paths:
             $ref: '#/definitions/health_worker.HTTPError'
             type: object
       summary: update healthCheck
+securityDefinitions:
+  ID:
+    in: header
+    name: PIR5-ID
+    type: apiKey
+  Secret:
+    in: header
+    name: PIR5-SECRET
+    type: apiKey
 swagger: "2.0"
