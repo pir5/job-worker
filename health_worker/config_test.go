@@ -41,6 +41,10 @@ func TestNewConfig(t *testing.T) {
 					TTL:      60,
 					Password: "redis_password",
 				},
+				PdnsAPI:pdnsAPI{
+					Host: "127.0.0.1",
+					Port: 8080,
+				},
 			},
 		},
 	}
