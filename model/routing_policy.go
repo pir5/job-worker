@@ -1,7 +1,6 @@
 package model
 
 import (
-	"fmt"
 	"github.com/jinzhu/gorm"
 	"github.com/pir5/pir5-go/dnsapi/operations"
 )
@@ -41,7 +40,6 @@ type RoutingPolicyModel interface {
 
 func (r *RoutingPolicy) ChangeState(checkResult bool) error {
 	// get state of records
-	fmt.Printf("[DEBUG] r: %+v\n", r)
 	record := NewRecordModel(int64(r.RecordID), r.Client)
 	currentState, err := record.GetState()
 	if err != nil {
@@ -52,20 +50,16 @@ func (r *RoutingPolicy) ChangeState(checkResult bool) error {
 	case RoutingPolicyTypeFailOverPrimary, RoutingPolicyTypeDetach:
 		if currentState && !checkResult {
 			// change state to disable if currentState is enable and checkResult is failed
-			fmt.Println(">>> change state to disable if currentState is enable and checkResult is failed")
 			return record.ChangeStateToDisable()
 		} else if !currentState && checkResult {
 			// change state to enable if currentState is disable and checkResult is success
-			fmt.Println(">>> change state to enable if currentState is disable and checkResult is success")
 			return record.ChangeStateToEnable()
 		}
 	case RoutingPolicyTypeFailOverSecondly:
 		if checkResult && currentState {
 			// change state to disable if currentState is enable and checkResult is success
-			fmt.Println(">>> change state to disable if currentState is enable and checkResult is success")
 			return record.ChangeStateToDisable()
 		} else if !checkResult && !currentState {
-			fmt.Println(">>> change state to enable if currentState is disable and checkResult is failed")
 			return record.ChangeStateToEnable()
 		}
 	}
@@ -74,7 +68,7 @@ func (r *RoutingPolicy) ChangeState(checkResult bool) error {
 }
 
 func (h *RoutingPolicy) FindBy(params map[string]interface{}) (RoutingPolicies, error) {
-	query := h.db
+	query := h.db.New()
 	for k, v := range params {
 		query = query.Where(k+" in(?)", v)
 	}
@@ -93,7 +87,7 @@ func (h *RoutingPolicy) FindBy(params map[string]interface{}) (RoutingPolicies, 
 }
 
 func (d *RoutingPolicy) UpdateByID(id string, newRoutingPolicy *RoutingPolicy) (bool, error) {
-	r := d.db.Where("id = ?", id).Take(&d)
+	r := d.db.New().Where("id = ?", id).Take(&d)
 	if r.Error != nil {
 		if r.RecordNotFound() {
 			return false, nil
@@ -110,7 +104,7 @@ func (d *RoutingPolicy) UpdateByID(id string, newRoutingPolicy *RoutingPolicy) (
 }
 
 func (d *RoutingPolicy) DeleteByID(id string) (bool, error) {
-	r := d.db.Where("id = ?", id).Take(&d)
+	r := d.db.New().Where("id = ?", id).Take(&d)
 	if r.Error != nil {
 		if r.RecordNotFound() {
 			return false, nil
@@ -127,7 +121,7 @@ func (d *RoutingPolicy) DeleteByID(id string) (bool, error) {
 }
 
 func (d *RoutingPolicy) Create(newRoutingPolicy *RoutingPolicy) error {
-	if err := d.db.Create(newRoutingPolicy).Error; err != nil {
+	if err := d.db.New().Create(newRoutingPolicy).Error; err != nil {
 		return err
 	}
 	return nil
