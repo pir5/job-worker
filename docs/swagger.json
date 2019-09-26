@@ -296,7 +296,7 @@
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/model.RoutingPolicyModel"
+                                "$ref": "#/definitions/model.RoutingPolicy"
                             }
                         }
                     },
@@ -350,7 +350,7 @@
                         "description": "Created",
                         "schema": {
                             "type": "object",
-                            "$ref": "#/definitions/model.RoutingPolicyModel"
+                            "$ref": "#/definitions/model.RoutingPolicy"
                         }
                     },
                     "403": {
@@ -419,7 +419,7 @@
                         "description": "OK",
                         "schema": {
                             "type": "object",
-                            "$ref": "#/definitions/model.RoutingPolicyModel"
+                            "$ref": "#/definitions/model.RoutingPolicy"
                         }
                     },
                     "403": {
@@ -476,7 +476,7 @@
                         "description": "No Content",
                         "schema": {
                             "type": "object",
-                            "$ref": "#/definitions/model.RoutingPolicyModel"
+                            "$ref": "#/definitions/model.RoutingPolicy"
                         }
                     },
                     "403": {
@@ -613,9 +613,6 @@
                     "type": "integer"
                 }
             }
-        },
-        "model.RoutingPolicyModel": {
-            "type": "object"
         }
     },
     "securityDefinitions": {
