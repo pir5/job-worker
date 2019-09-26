@@ -49,7 +49,7 @@ type HealthCheckParams struct {
 	HostName   string
 	Path       string
 	SearchWord string
-	Timeout    time.Duration
+	Timeout    time.Duration `swaggertype:"integer"`
 }
 
 // http://qiita.com/roothybrid7/items/2db3ccbf46f2bdb9cd00
