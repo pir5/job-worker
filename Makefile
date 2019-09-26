@@ -6,11 +6,7 @@ TEST ?= $(shell go list ./... | grep -v -e vendor -e keys -e tmp)
 BINARY:=health-worker
 SYSTEM:=
 BUILDOPTS:=
-ifeq ("$(shell uname)","Darwin")
 GO ?= GO111MODULE=on $(SYSTEM) go
-else
-GO ?= GO111MODULE=on $(SYSTEM) /usr/local/go/bin/go
-endif
 
 dbcreate: ## Crate user and Create database
 	@echo "$(INFO_COLOR)==> $(RESET)$(BOLD)Setup database$(RESET)"
