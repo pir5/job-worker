@@ -103,7 +103,7 @@ func NewHealthCheck(message *workers.Msg) (*HealthCheck, error) {
 }
 
 func (h *HealthCheck) FindBy(params map[string]interface{}) (HealthChecks, error) {
-	query := h.db
+	query := h.db.New()
 	for k, v := range params {
 		query = query.Where(k+" in(?)", v)
 	}
@@ -122,7 +122,7 @@ func (h *HealthCheck) FindBy(params map[string]interface{}) (HealthChecks, error
 }
 
 func (d *HealthCheck) UpdateByID(id string, newHealthCheck *HealthCheck) (bool, error) {
-	r := d.db.Where("id = ?", id).Take(&d)
+	r := d.db.New().Where("id = ?", id).Take(&d)
 	if r.Error != nil {
 		if r.RecordNotFound() {
 			return false, nil
@@ -156,7 +156,7 @@ func (d *HealthCheck) DeleteByID(id string) (bool, error) {
 }
 
 func (d *HealthCheck) Create(newHealthCheck *HealthCheck) error {
-	if err := d.db.Create(newHealthCheck).Error; err != nil {
+	if err := d.db.New().Create(newHealthCheck).Error; err != nil {
 		return err
 	}
 	return nil
