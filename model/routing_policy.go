@@ -110,7 +110,8 @@ func (d *RoutingPolicy) UpdateByID(id string, newRoutingPolicy *RoutingPolicy) (
 }
 
 func (d *RoutingPolicy) DeleteByID(id string) (bool, error) {
-	r := d.db.Where("id = ?", id).Take(&d)
+	policy := &RoutingPolicy{}
+	r := d.db.New().Where("id = ?", id).Take(&policy)
 	if r.Error != nil {
 		if r.RecordNotFound() {
 			return false, nil
@@ -119,7 +120,7 @@ func (d *RoutingPolicy) DeleteByID(id string) (bool, error) {
 		}
 	}
 
-	r = d.db.Delete(d)
+	r = d.db.Delete(policy)
 	if r.Error != nil {
 		return false, r.Error
 	}

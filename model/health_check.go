@@ -138,7 +138,8 @@ func (d *HealthCheck) UpdateByID(id string, newHealthCheck *HealthCheck) (bool, 
 	return true, nil
 }
 func (d *HealthCheck) DeleteByID(id string) (bool, error) {
-	r := d.db.Where("id = ?", id).Take(&d)
+	healthCheck := &HealthCheck{}
+	r := d.db.New().Where("id = ?", id).Take(&healthCheck)
 	if r.Error != nil {
 		if r.RecordNotFound() {
 			return false, nil
@@ -147,7 +148,7 @@ func (d *HealthCheck) DeleteByID(id string) (bool, error) {
 		}
 	}
 
-	r = d.db.Delete(d)
+	r = d.db.Delete(healthCheck)
 	if r.Error != nil {
 		return false, r.Error
 	}
