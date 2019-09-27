@@ -6,8 +6,6 @@ definitions:
     properties:
       checkInterval:
         type: integer
-      db:
-        type: string
       id:
         type: integer
       name:
@@ -43,10 +41,6 @@ definitions:
   model.RoutingPolicies:
     items:
       properties:
-        client:
-          type: string
-        db:
-          type: string
         healthCheckID:
           type: integer
         id:
@@ -59,10 +53,6 @@ definitions:
     type: array
   model.RoutingPolicy:
     properties:
-      client:
-        type: string
-      db:
-        type: string
       healthCheckID:
         type: integer
       id:

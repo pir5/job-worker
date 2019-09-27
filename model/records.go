@@ -3,7 +3,7 @@ package model
 import (
 	"context"
 	"errors"
-	"fmt"
+
 	"github.com/pir5/pdns-api/models"
 	"github.com/pir5/pir5-go/dnsapi/operations"
 )
@@ -27,7 +27,6 @@ type Record struct {
 }
 
 func (r *Record) ChangeStateToEnable() error {
-	fmt.Printf("[DEBUG] change state to enable (id: %d)\n", r.ID)
 	p := &operations.PutRecordsEnableIDParams{
 		ID: r.ID,
 		Record: &models.ModelRecord{
@@ -36,17 +35,14 @@ func (r *Record) ChangeStateToEnable() error {
 		Context: context.Background(),
 	}
 
-	res, err := r.client.PutRecordsEnableID(p)
+	_, err := r.client.PutRecordsEnableID(p)
 	if err != nil {
-		fmt.Println(err)
 		return err
 	}
-	fmt.Printf("[DEBUG] updated record: id: %d, disabled: %v\n", res.Payload.ID, res.Payload.Disabled)
 	return err
 }
 
 func (r *Record) ChangeStateToDisable() error {
-	fmt.Printf("[DEBUG] change state to disable (id: %d)\n", r.ID)
 	p := &operations.PutRecordsDisableIDParams{
 		ID: r.ID,
 		Record: &models.ModelRecord{
@@ -54,12 +50,10 @@ func (r *Record) ChangeStateToDisable() error {
 		},
 		Context: context.Background(),
 	}
-	res, err := r.client.PutRecordsDisableID(p)
+	_, err := r.client.PutRecordsDisableID(p)
 	if err != nil {
-		fmt.Println(err)
 		return err
 	}
-	fmt.Printf("[DEBUG] updated record: id: %d, disabled: %v\n", res.Payload.ID, res.Payload.Disabled)
 	return err
 }
 
@@ -75,6 +69,10 @@ func (r *Record) GetState() (bool, error) {
 
 	if len(record.GetPayload()) > 1 {
 		return false, errors.New("Found records same ID")
+	}
+
+	if len(record.GetPayload()) < 1 {
+		return false, errors.New("record NotFound")
 	}
 
 	return !record.GetPayload()[0].Disabled, nil

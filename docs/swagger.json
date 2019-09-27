@@ -546,9 +546,6 @@
                 "checkInterval": {
                     "type": "integer"
                 },
-                "db": {
-                    "type": "string"
-                },
                 "id": {
                     "type": "integer"
                 },
@@ -602,12 +599,6 @@
             "items": {
                 "type": "object",
                 "properties": {
-                    "client": {
-                        "type": "string"
-                    },
-                    "db": {
-                        "type": "string"
-                    },
                     "healthCheckID": {
                         "type": "integer"
                     },
@@ -626,12 +617,6 @@
         "model.RoutingPolicy": {
             "type": "object",
             "properties": {
-                "client": {
-                    "type": "string"
-                },
-                "db": {
-                    "type": "string"
-                },
                 "healthCheckID": {
                     "type": "integer"
                 },
