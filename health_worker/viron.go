@@ -97,7 +97,7 @@ func vironGlobalMenu(c echo.Context) error {
 	    { key: "record_id", type: "integer" },
 	    { key: "health_check_id", type: "integer" }
           ],
-          "name": "Record",
+          "name": "RoutingPolicies",
 	  "style": "table",
 	  "primary": "id",
 	  "table_labels": [
