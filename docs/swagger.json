@@ -593,7 +593,7 @@
                     "type": "string"
                 },
                 "timeout": {
-                    "type": "string"
+                    "type": "integer"
                 }
             }
         },

@@ -38,7 +38,7 @@ definitions:
       searchWord:
         type: string
       timeout:
-        type: string
+        type: integer
     type: object
   model.RoutingPolicies:
     items:

@@ -606,7 +606,7 @@ var doc = `{
                     "type": "string"
                 },
                 "timeout": {
-                    "type": "string"
+                    "type": "integer"
                 }
             }
         },

@@ -108,7 +108,7 @@ func (d *RoutingPolicyModel) UpdateByID(id string, newRoutingPolicy *RoutingPoli
 }
 
 func (d *RoutingPolicyModel) DeleteByID(id string) (bool, error) {
-	rp := RoutingPolicyModel{}
+	rp := RoutingPolicy{}
 	r := d.db.Where("id = ?", id).Take(&rp)
 	if r.Error != nil {
 		if r.RecordNotFound() {
