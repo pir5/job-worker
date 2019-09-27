@@ -10,14 +10,7 @@ import (
 
 func TestHealthCheck_FindBy(t *testing.T) {
 	type fields struct {
-		db              *gorm.DB
-		ID              int
-		Name            string
-		Type            int
-		CheckInterval   int
-		Threshould      int
-		Params          *HealthCheckParams
-		RoutingPolicies RoutingPolicies
+		db *gorm.DB
 	}
 	type args struct {
 		params map[string]interface{}
@@ -111,14 +104,8 @@ func TestHealthCheck_FindBy(t *testing.T) {
 
 			gdb, _ := gorm.Open("mysql", db)
 
-			h := &HealthCheck{
-				db:            gdb,
-				ID:            tt.fields.ID,
-				Name:          tt.fields.Name,
-				Type:          tt.fields.Type,
-				Threshould:    tt.fields.Threshould,
-				CheckInterval: tt.fields.CheckInterval,
-				Params:        tt.fields.Params,
+			h := &HealthCheckModel{
+				db: gdb,
 			}
 			got, err := h.FindBy(tt.args.params)
 			if (err != nil) != tt.wantErr {
@@ -134,14 +121,7 @@ func TestHealthCheck_FindBy(t *testing.T) {
 
 func TestHealthCheck_UpdateByID(t *testing.T) {
 	type fields struct {
-		db              *gorm.DB
-		ID              int
-		Name            string
-		Type            int
-		CheckInterval   int
-		Threshould      int
-		Params          *HealthCheckParams
-		RoutingPolicies RoutingPolicies
+		db *gorm.DB
 	}
 	type args struct {
 		id             string
@@ -228,14 +208,8 @@ func TestHealthCheck_UpdateByID(t *testing.T) {
 			}
 
 			gdb, _ := gorm.Open("mysql", db)
-			d := &HealthCheck{
-				db:            gdb,
-				ID:            tt.fields.ID,
-				Name:          tt.fields.Name,
-				Type:          tt.fields.Type,
-				Threshould:    tt.fields.Threshould,
-				CheckInterval: tt.fields.CheckInterval,
-				Params:        tt.fields.Params,
+			d := &HealthCheckModel{
+				db: gdb,
 			}
 
 			got, err := d.UpdateByID(tt.args.id, tt.args.newHealthCheck)
@@ -252,14 +226,7 @@ func TestHealthCheck_UpdateByID(t *testing.T) {
 
 func TestHealthCheck_DeleteByID(t *testing.T) {
 	type fields struct {
-		db              *gorm.DB
-		ID              int
-		Name            string
-		Type            int
-		CheckInterval   int
-		Threshould      int
-		Params          *HealthCheckParams
-		RoutingPolicies RoutingPolicies
+		db *gorm.DB
 	}
 	type args struct {
 		id string
@@ -342,14 +309,8 @@ func TestHealthCheck_DeleteByID(t *testing.T) {
 			}
 
 			gdb, _ := gorm.Open("mysql", db)
-			d := &HealthCheck{
-				db:            gdb,
-				ID:            tt.fields.ID,
-				Name:          tt.fields.Name,
-				Type:          tt.fields.Type,
-				Threshould:    tt.fields.Threshould,
-				CheckInterval: tt.fields.CheckInterval,
-				Params:        tt.fields.Params,
+			d := &HealthCheckModel{
+				db: gdb,
 			}
 
 			got, err := d.DeleteByID(tt.args.id)
@@ -366,14 +327,7 @@ func TestHealthCheck_DeleteByID(t *testing.T) {
 
 func TestHealthCheck_Create(t *testing.T) {
 	type fields struct {
-		db              *gorm.DB
-		ID              int
-		Name            string
-		Type            int
-		CheckInterval   int
-		Threshould      int
-		Params          *HealthCheckParams
-		RoutingPolicies RoutingPolicies
+		db *gorm.DB
 	}
 	type args struct {
 		newHealthCheck *HealthCheck
@@ -429,14 +383,8 @@ func TestHealthCheck_Create(t *testing.T) {
 			}
 
 			gdb, _ := gorm.Open("mysql", db)
-			d := &HealthCheck{
-				db:            gdb,
-				ID:            tt.fields.ID,
-				Name:          tt.fields.Name,
-				Type:          tt.fields.Type,
-				Threshould:    tt.fields.Threshould,
-				CheckInterval: tt.fields.CheckInterval,
-				Params:        tt.fields.Params,
+			d := &HealthCheckModel{
+				db: gdb,
 			}
 
 			err = d.Create(tt.args.newHealthCheck)

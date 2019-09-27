@@ -10,6 +10,8 @@ import (
 
 	stdLog "log"
 
+	httptransport "github.com/go-openapi/runtime/client"
+	"github.com/go-openapi/strfmt"
 	echoSwagger "github.com/swaggo/echo-swagger"
 
 	"github.com/facebookgo/pidfile"
@@ -18,7 +20,9 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/labstack/gommon/log"
+	"github.com/pir5/health-worker/docs"
 	pmiddleware "github.com/pir5/health-worker/middleware"
+	"github.com/pir5/pir5-go/dnsapi/operations"
 )
 
 const (
@@ -123,9 +127,14 @@ func runAPI(cmdFlags *GlobalFlags, args []string) error {
 		}
 	}()
 
+	transport := httptransport.New(fmt.Sprintf("%s:%d", conf.PdnsAPI.Host, conf.PdnsAPI.Port), "v1", nil)
+	pdnsAPI := operations.New(transport, strfmt.Default)
+
 	v1 := e.Group("/v1")
 	HealthCheckEndpoints(v1, db.Set("gorm:association_autoupdate", false).Set("gorm:association_autocreate", false))
-	RoutingPolicyEndpoints(v1, db.Set("gorm:association_autoupdate", false).Set("gorm:association_autocreate", false))
+	RoutingPolicyEndpoints(v1, db.Set("gorm:association_autoupdate", false).Set("gorm:association_autocreate", false), pdnsAPI)
+	VironEndpoints(v1)
+	docs.SwaggerInfo.Host = globalConfig.Listen
 	e.GET("/", func(c echo.Context) error {
 		return c.String(http.StatusOK, "Hello! HealthWorker!!1")
 	})

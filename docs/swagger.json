@@ -502,6 +502,38 @@
                     }
                 }
             }
+        },
+        "/viron": {
+            "get": {
+                "description": "get global menu",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "viron"
+                ],
+                "summary": "get global menu",
+                "operationId": "viron#get"
+            }
+        },
+        "/viron_authtype": {
+            "get": {
+                "description": "get auth type",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "viron"
+                ],
+                "summary": "get auth type",
+                "operationId": "viron_authtype#get"
+            }
         }
     },
     "definitions": {

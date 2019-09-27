@@ -52,7 +52,7 @@ func runRegister(cmdFlags *GlobalFlags, args []string) error {
 		return err
 	}
 
-	healthCheck := model.NewHealthCheckModel(db)
+	healthCheck := model.NewHealthCheckModeler(db)
 	for {
 		healthChecks, err := healthCheck.FindBy(map[string]interface{}{
 			IntervalKey: conf.PollInterval,

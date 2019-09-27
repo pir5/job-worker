@@ -6,6 +6,7 @@ import (
 	"github.com/jinzhu/gorm"
 	"github.com/labstack/echo/v4"
 	"github.com/pir5/health-worker/model"
+	"github.com/pir5/pir5-go/dnsapi/operations"
 )
 
 // getRoutingPolicys is getting routingpolicies.
@@ -30,7 +31,7 @@ func (h *RoutingPolicyHandler) getRoutingPolicies(c echo.Context) error {
 		whereParams[k] = v
 	}
 
-	ds, err := h.RoutingPolicyModel.FindBy(whereParams)
+	ds, err := h.RoutingPolicyModeler.FindBy(whereParams)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err)
 	}
@@ -61,7 +62,7 @@ func (h *RoutingPolicyHandler) updateRoutingPolicy(c echo.Context) error {
 	if err := c.Bind(nd); err != nil {
 		return c.JSON(http.StatusBadRequest, err)
 	}
-	updated, err := h.RoutingPolicyModel.UpdateByID(c.Param("id"), nd)
+	updated, err := h.RoutingPolicyModeler.UpdateByID(c.Param("id"), nd)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err)
 	}
@@ -86,7 +87,7 @@ func (h *RoutingPolicyHandler) updateRoutingPolicy(c echo.Context) error {
 // @Failure 500 {object} health_worker.HTTPError
 // @Router /routingpolicies/{id} [delete]
 func (h *RoutingPolicyHandler) deleteRoutingPolicy(c echo.Context) error {
-	deleted, err := h.RoutingPolicyModel.DeleteByID(c.Param("id"))
+	deleted, err := h.RoutingPolicyModeler.DeleteByID(c.Param("id"))
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err)
 	}
@@ -117,23 +118,23 @@ func (h *RoutingPolicyHandler) createRoutingPolicy(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, err)
 	}
 
-	if err := h.RoutingPolicyModel.Create(d); err != nil {
+	if err := h.RoutingPolicyModeler.Create(d); err != nil {
 		return c.JSON(http.StatusInternalServerError, err)
 	}
 	return c.JSON(http.StatusCreated, nil)
 }
 
 type RoutingPolicyHandler struct {
-	RoutingPolicyModel model.RoutingPolicyModel
+	RoutingPolicyModeler model.RoutingPolicyModeler
 }
 
-func NewRoutingPolicyHandler(d model.RoutingPolicyModel) *RoutingPolicyHandler {
+func NewRoutingPolicyHandler(d model.RoutingPolicyModeler) *RoutingPolicyHandler {
 	return &RoutingPolicyHandler{
-		RoutingPolicyModel: d,
+		RoutingPolicyModeler: d,
 	}
 }
-func RoutingPolicyEndpoints(g *echo.Group, db *gorm.DB) {
-	h := NewRoutingPolicyHandler(model.NewRoutingPolicyModel(db, nil))
+func RoutingPolicyEndpoints(g *echo.Group, db *gorm.DB, client *operations.Client) {
+	h := NewRoutingPolicyHandler(model.NewRoutingPolicyModeler(db, client))
 	g.GET("/routingpolicies", h.getRoutingPolicies)
 	g.PUT("/routingpolicies/:id", h.updateRoutingPolicy)
 	g.DELETE("/routingpolicies/:id", h.deleteRoutingPolicy)

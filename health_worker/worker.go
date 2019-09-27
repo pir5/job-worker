@@ -2,10 +2,11 @@ package health_worker
 
 import (
 	"fmt"
+	"os" // Import this package
+
 	httptransport "github.com/go-openapi/runtime/client"
 	"github.com/go-openapi/strfmt"
 	"github.com/pir5/pir5-go/dnsapi/operations"
-	"os" // Import this package
 
 	goredis "github.com/go-redis/redis"
 	"github.com/pir5/health-worker/model"
@@ -32,7 +33,7 @@ const healthCheckIDKey = "health_check_id"
 
 type Worker struct {
 	failedCounter model.FailedCounterModel
-	routingPolicy model.RoutingPolicyModel
+	routingPolicy model.RoutingPolicyModeler
 	pdnsAPIClient *operations.Client
 }
 
@@ -77,7 +78,7 @@ func runWorker(cmdFlags *GlobalFlags, args []string) error {
 
 	w := Worker{
 		failedCounter: model.NewFailedCounter(redisClient),
-		routingPolicy: model.NewRoutingPolicyModel(db, pdnsAPI),
+		routingPolicy: model.NewRoutingPolicyModeler(db, pdnsAPI),
 		pdnsAPIClient: pdnsAPI,
 	}
 
@@ -151,8 +152,7 @@ func (w *Worker) afterCheck(h *model.HealthCheck, checkResult bool) error {
 	}
 
 	for _, r := range rs {
-		r.Client = w.pdnsAPIClient
-		err := r.ChangeState(checkResult)
+		err := w.routingPolicy.ChangeState(&r, checkResult)
 		if err != nil {
 			return err
 		}

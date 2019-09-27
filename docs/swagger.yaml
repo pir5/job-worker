@@ -398,6 +398,28 @@ paths:
       - ID: []
       - Secret: []
       summary: update healthCheck
+  /viron:
+    get:
+      consumes:
+      - application/json
+      description: get global menu
+      operationId: viron#get
+      produces:
+      - application/json
+      summary: get global menu
+      tags:
+      - viron
+  /viron_authtype:
+    get:
+      consumes:
+      - application/json
+      description: get auth type
+      operationId: viron_authtype#get
+      produces:
+      - application/json
+      summary: get auth type
+      tags:
+      - viron
 securityDefinitions:
   ID:
     in: header

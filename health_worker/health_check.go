@@ -30,7 +30,7 @@ func (h *HealthCheckHandler) getHealthChecks(c echo.Context) error {
 		whereParams[k] = v
 	}
 
-	ds, err := h.HealthCheckModel.FindBy(whereParams)
+	ds, err := h.HealthCheckModeler.FindBy(whereParams)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err)
 	}
@@ -61,7 +61,7 @@ func (h *HealthCheckHandler) updateHealthCheck(c echo.Context) error {
 	if err := c.Bind(nd); err != nil {
 		return c.JSON(http.StatusBadRequest, err)
 	}
-	updated, err := h.HealthCheckModel.UpdateByID(c.Param("id"), nd)
+	updated, err := h.HealthCheckModeler.UpdateByID(c.Param("id"), nd)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err)
 	}
@@ -86,7 +86,7 @@ func (h *HealthCheckHandler) updateHealthCheck(c echo.Context) error {
 // @Failure 500 {object} health_worker.HTTPError
 // @Router /healthchecks/{id} [delete]
 func (h *HealthCheckHandler) deleteHealthCheck(c echo.Context) error {
-	deleted, err := h.HealthCheckModel.DeleteByID(c.Param("id"))
+	deleted, err := h.HealthCheckModeler.DeleteByID(c.Param("id"))
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err)
 	}
@@ -117,23 +117,23 @@ func (h *HealthCheckHandler) createHealthCheck(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, err)
 	}
 
-	if err := h.HealthCheckModel.Create(d); err != nil {
+	if err := h.HealthCheckModeler.Create(d); err != nil {
 		return c.JSON(http.StatusInternalServerError, err)
 	}
 	return c.JSON(http.StatusCreated, nil)
 }
 
 type HealthCheckHandler struct {
-	HealthCheckModel model.HealthCheckModel
+	HealthCheckModeler model.HealthCheckModeler
 }
 
-func NewHealthCheckHandler(d model.HealthCheckModel) *HealthCheckHandler {
+func NewHealthCheckHandler(d model.HealthCheckModeler) *HealthCheckHandler {
 	return &HealthCheckHandler{
-		HealthCheckModel: d,
+		HealthCheckModeler: d,
 	}
 }
 func HealthCheckEndpoints(g *echo.Group, db *gorm.DB) {
-	h := NewHealthCheckHandler(model.NewHealthCheckModel(db))
+	h := NewHealthCheckHandler(model.NewHealthCheckModeler(db))
 	g.GET("/healthchecks", h.getHealthChecks)
 	g.PUT("/healthchecks/:id", h.updateHealthCheck)
 	g.DELETE("/healthchecks/:id", h.deleteHealthCheck)

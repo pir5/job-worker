@@ -16,21 +16,23 @@ const (
 	HealthCheckTypeTCP
 )
 
-type HealthCheckModel interface {
+type HealthCheckModeler interface {
 	FindBy(map[string]interface{}) (HealthChecks, error)
 	UpdateByID(string, *HealthCheck) (bool, error)
 	DeleteByID(string) (bool, error)
 	Create(*HealthCheck) error
 }
 
-func NewHealthCheckModel(db *gorm.DB) *HealthCheck {
-	return &HealthCheck{
+func NewHealthCheckModeler(db *gorm.DB) *HealthCheckModel {
+	return &HealthCheckModel{
 		db: db,
 	}
 }
 
+type HealthCheckModel struct {
+	db *gorm.DB
+}
 type HealthCheck struct {
-	db              *gorm.DB
 	ID              int
 	Name            string
 	Type            int
@@ -102,7 +104,10 @@ func NewHealthCheck(message *workers.Msg) (*HealthCheck, error) {
 	return &p, nil
 }
 
-func (h *HealthCheck) FindBy(params map[string]interface{}) (HealthChecks, error) {
+func (h *HealthCheckModel) TableName() string {
+	return "health_checks"
+}
+func (h *HealthCheckModel) FindBy(params map[string]interface{}) (HealthChecks, error) {
 	query := h.db.New()
 	for k, v := range params {
 		query = query.Where(k+" in(?)", v)
@@ -121,8 +126,9 @@ func (h *HealthCheck) FindBy(params map[string]interface{}) (HealthChecks, error
 	return hs, nil
 }
 
-func (d *HealthCheck) UpdateByID(id string, newHealthCheck *HealthCheck) (bool, error) {
-	r := d.db.New().Where("id = ?", id).Take(&d)
+func (d *HealthCheckModel) UpdateByID(id string, newHealthCheck *HealthCheck) (bool, error) {
+	hc := HealthCheck{}
+	r := d.db.Where("id = ?", id).Take(&hc)
 	if r.Error != nil {
 		if r.RecordNotFound() {
 			return false, nil
@@ -131,14 +137,15 @@ func (d *HealthCheck) UpdateByID(id string, newHealthCheck *HealthCheck) (bool, 
 		}
 	}
 
-	r = d.db.Model(&d).Updates(&newHealthCheck)
+	r = d.db.Model(&hc).Updates(&newHealthCheck)
 	if r.Error != nil {
 		return false, r.Error
 	}
 	return true, nil
 }
-func (d *HealthCheck) DeleteByID(id string) (bool, error) {
-	r := d.db.New().Where("id = ?", id).Take(&d)
+func (d *HealthCheckModel) DeleteByID(id string) (bool, error) {
+	hc := HealthCheck{}
+	r := d.db.Where("id = ?", id).Take(&hc)
 	if r.Error != nil {
 		if r.RecordNotFound() {
 			return false, nil
@@ -147,15 +154,15 @@ func (d *HealthCheck) DeleteByID(id string) (bool, error) {
 		}
 	}
 
-	r = d.db.Delete(d)
+	r = d.db.Delete(&hc)
 	if r.Error != nil {
 		return false, r.Error
 	}
 	return true, nil
 }
 
-func (d *HealthCheck) Create(newHealthCheck *HealthCheck) error {
-	if err := d.db.New().Create(newHealthCheck).Error; err != nil {
+func (d *HealthCheckModel) Create(newHealthCheck *HealthCheck) error {
+	if err := d.db.Create(newHealthCheck).Error; err != nil {
 		return err
 	}
 	return nil

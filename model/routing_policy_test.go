@@ -98,12 +98,8 @@ func TestRoutingPolicy_FindBy(t *testing.T) {
 			}
 
 			gdb, _ := gorm.Open("mysql", db)
-			h := &RoutingPolicy{
-				db:            gdb,
-				ID:            tt.fields.ID,
-				RecordID:      tt.fields.RecordID,
-				HealthCheckID: tt.fields.HealthCheckID,
-				Type:          tt.fields.Type,
+			h := &RoutingPolicyModel{
+				db: gdb,
 			}
 
 			got, err := h.FindBy(tt.args.params)

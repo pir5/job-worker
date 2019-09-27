@@ -12,16 +12,19 @@ const (
 	RoutingPolicyTypeDetach
 )
 
-func NewRoutingPolicyModel(db *gorm.DB, client *operations.Client) *RoutingPolicy {
-	return &RoutingPolicy{
+func NewRoutingPolicyModeler(db *gorm.DB, client *operations.Client) *RoutingPolicyModel {
+	return &RoutingPolicyModel{
 		db:     db,
 		Client: client,
 	}
 }
 
+type RoutingPolicyModel struct {
+	db     *gorm.DB
+	Client *operations.Client
+}
+
 type RoutingPolicy struct {
-	db            *gorm.DB
-	Client        *operations.Client
 	ID            int
 	RecordID      int
 	HealthCheckID int
@@ -30,17 +33,17 @@ type RoutingPolicy struct {
 
 type RoutingPolicies []RoutingPolicy
 
-type RoutingPolicyModel interface {
+type RoutingPolicyModeler interface {
 	FindBy(map[string]interface{}) (RoutingPolicies, error)
 	UpdateByID(string, *RoutingPolicy) (bool, error)
 	DeleteByID(string) (bool, error)
-	Create(policy *RoutingPolicy) error
-	ChangeState(bool) error
+	Create(*RoutingPolicy) error
+	ChangeState(*RoutingPolicy, bool) error
 }
 
-func (r *RoutingPolicy) ChangeState(checkResult bool) error {
+func (rm *RoutingPolicyModel) ChangeState(r *RoutingPolicy, checkResult bool) error {
 	// get state of records
-	record := NewRecordModel(int64(r.RecordID), r.Client)
+	record := NewRecordModel(int64(r.RecordID), rm.Client)
 	currentState, err := record.GetState()
 	if err != nil {
 		return err
@@ -67,7 +70,7 @@ func (r *RoutingPolicy) ChangeState(checkResult bool) error {
 	return nil
 }
 
-func (h *RoutingPolicy) FindBy(params map[string]interface{}) (RoutingPolicies, error) {
+func (h *RoutingPolicyModel) FindBy(params map[string]interface{}) (RoutingPolicies, error) {
 	query := h.db.New()
 	for k, v := range params {
 		query = query.Where(k+" in(?)", v)
@@ -86,8 +89,9 @@ func (h *RoutingPolicy) FindBy(params map[string]interface{}) (RoutingPolicies, 
 	return hs, nil
 }
 
-func (d *RoutingPolicy) UpdateByID(id string, newRoutingPolicy *RoutingPolicy) (bool, error) {
-	r := d.db.New().Where("id = ?", id).Take(&d)
+func (d *RoutingPolicyModel) UpdateByID(id string, newRoutingPolicy *RoutingPolicy) (bool, error) {
+	rp := RoutingPolicyModel{}
+	r := d.db.Where("id = ?", id).Take(&rp)
 	if r.Error != nil {
 		if r.RecordNotFound() {
 			return false, nil
@@ -96,15 +100,16 @@ func (d *RoutingPolicy) UpdateByID(id string, newRoutingPolicy *RoutingPolicy) (
 		}
 	}
 
-	r = d.db.Model(&d).Updates(&newRoutingPolicy)
+	r = d.db.Model(&rp).Updates(&newRoutingPolicy)
 	if r.Error != nil {
 		return false, r.Error
 	}
 	return true, nil
 }
 
-func (d *RoutingPolicy) DeleteByID(id string) (bool, error) {
-	r := d.db.New().Where("id = ?", id).Take(&d)
+func (d *RoutingPolicyModel) DeleteByID(id string) (bool, error) {
+	rp := RoutingPolicyModel{}
+	r := d.db.Where("id = ?", id).Take(&rp)
 	if r.Error != nil {
 		if r.RecordNotFound() {
 			return false, nil
@@ -113,15 +118,15 @@ func (d *RoutingPolicy) DeleteByID(id string) (bool, error) {
 		}
 	}
 
-	r = d.db.Delete(d)
+	r = d.db.Delete(&rp)
 	if r.Error != nil {
 		return false, r.Error
 	}
 	return true, nil
 }
 
-func (d *RoutingPolicy) Create(newRoutingPolicy *RoutingPolicy) error {
-	if err := d.db.New().Create(newRoutingPolicy).Error; err != nil {
+func (d *RoutingPolicyModel) Create(newRoutingPolicy *RoutingPolicy) error {
+	if err := d.db.Create(newRoutingPolicy).Error; err != nil {
 		return err
 	}
 	return nil
