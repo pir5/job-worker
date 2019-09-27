@@ -18,14 +18,10 @@ import (
 // @description This is PIR5 HealthCheck worker and API
 // @license.name Apache 2.0
 // @license.url http://www.apache.org/licenses/LICENSE-2.0.html
-// @host 127.0.0.1:8080
 // @BasePath /v1
-// @securityDefinitions.apikey ID
+// @securityDefinitions.apikey Bearer
 // @in header
-// @name PIR5-ID
-// @securityDefinitions.apikey Secret
-// @in header
-// @name PIR5-SECRET
+// @name Bearer
 // Commands lists the available commands and help topics.
 // The order here is the order in which they are printed by 'health-worker help'.
 var commands = []*health_worker.Command{

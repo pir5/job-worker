@@ -21,7 +21,6 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/labstack/gommon/log"
 	"github.com/pir5/health-worker/docs"
-	pmiddleware "github.com/pir5/health-worker/middleware"
 	"github.com/pir5/pir5-go/dnsapi/operations"
 )
 
@@ -100,24 +99,7 @@ func runAPI(cmdFlags *GlobalFlags, args []string) error {
 
 		},
 		Skipper: func(c echo.Context) bool {
-			return !globalConfig.IsTokenAuth() && !globalConfig.IsHTTPAuth()
-		},
-	}))
-
-	e.Use(pmiddleware.HeaderAuthWithConfig(pmiddleware.HeaderAuthConfig{
-		Validator: func(username, password string, c echo.Context) (bool, error) {
-			if globalConfig.IsHTTPAuth() {
-				domains, err := globalConfig.Auth.HttpAuth.Authenticate(username, password)
-				if err != nil {
-					return false, err
-				}
-				c.Set(AllowDomainsKey, domains)
-				return true, nil
-			}
-			return false, nil
-		},
-		Skipper: func(c echo.Context) bool {
-			return !globalConfig.IsTokenAuth() && !globalConfig.IsHTTPAuth()
+			return !globalConfig.IsTokenAuth()
 		},
 	}))
 
@@ -138,7 +120,7 @@ func runAPI(cmdFlags *GlobalFlags, args []string) error {
 	e.GET("/", func(c echo.Context) error {
 		return c.String(http.StatusOK, "Hello! HealthWorker!!1")
 	})
-	e.GET("/swagger/*", echoSwagger.WrapHandler)
+	v1.GET("/swagger/*", echoSwagger.WrapHandler)
 	quit := make(chan os.Signal)
 	signal.Notify(quit, os.Interrupt)
 	<-quit

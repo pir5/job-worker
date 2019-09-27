@@ -10,7 +10,7 @@
         },
         "version": "1.0"
     },
-    "host": "127.0.0.1:8080",
+    "host": "{{.Host}}",
     "basePath": "/v1",
     "paths": {
         "/healthchecks": {
@@ -633,14 +633,9 @@
         }
     },
     "securityDefinitions": {
-        "ID": {
+        "Bearer": {
             "type": "apiKey",
-            "name": "PIR5-ID",
-            "in": "header"
-        },
-        "Secret": {
-            "type": "apiKey",
-            "name": "PIR5-SECRET",
+            "name": "Bearer",
             "in": "header"
         }
     }

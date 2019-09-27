@@ -7,9 +7,6 @@ import (
 	"github.com/spf13/viper"
 )
 
-const AuthTypeHTTP = "http"
-const AuthTypeToken = "token"
-
 func BindEnvs(iface interface{}, parts ...string) {
 	ifv := reflect.ValueOf(iface)
 	ift := reflect.TypeOf(iface)
@@ -60,7 +57,7 @@ type Config struct {
 	DB           database `mapstructure:"database"`
 	Redis        redis    `mapstructure:"redis"`
 	PdnsAPI      pdnsAPI  `mapstructure:"pdnsAPI"`
-	Auth         auth    `mapstructure:"auth"`
+	Auth         auth     `mapstructure:"auth"`
 }
 
 type database struct {
@@ -102,15 +99,9 @@ func defaultConfig(c *Config) {
 }
 
 type auth struct {
-	AuthType string   `mapstructure:"auth_type"` // token or http
-	Tokens   []string `mapstructure:"tokens"`
-	HttpAuth httpAuth `mapstructure:"http_auth"`
+	Tokens []string `mapstructure:"tokens"`
 }
 
 func (c Config) IsTokenAuth() bool {
-	return c.Auth.AuthType == AuthTypeToken
-}
-
-func (c Config) IsHTTPAuth() bool {
-	return c.Auth.AuthType == AuthTypeHTTP
+	return len(c.Auth.Tokens) > 0
 }

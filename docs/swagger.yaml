@@ -62,7 +62,7 @@ definitions:
       type:
         type: integer
     type: object
-host: 127.0.0.1:8080
+host: '{{.Host}}'
 info:
   contact: {}
   description: This is PIR5 HealthCheck worker and API
@@ -411,12 +411,8 @@ paths:
       tags:
       - viron
 securityDefinitions:
-  ID:
+  Bearer:
     in: header
-    name: PIR5-ID
-    type: apiKey
-  Secret:
-    in: header
-    name: PIR5-SECRET
+    name: Bearer
     type: apiKey
 swagger: "2.0"
