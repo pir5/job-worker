@@ -25,10 +25,10 @@ type RoutingPolicyModel struct {
 }
 
 type RoutingPolicy struct {
-	ID            int
-	RecordID      int
-	HealthCheckID int
-	Type          int
+	ID            int `json:"id"`
+	RecordID      int `json:"record_id"`
+	HealthCheckID int `json:"health_check_id"`
+	Type          int `json:"type"`
 }
 
 type RoutingPolicies []RoutingPolicy
@@ -108,7 +108,7 @@ func (d *RoutingPolicyModel) UpdateByID(id string, newRoutingPolicy *RoutingPoli
 }
 
 func (d *RoutingPolicyModel) DeleteByID(id string) (bool, error) {
-	rp := RoutingPolicy{}
+	rp := RoutingPolicyModel{}
 	r := d.db.Where("id = ?", id).Take(&rp)
 	if r.Error != nil {
 		if r.RecordNotFound() {

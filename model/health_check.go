@@ -33,13 +33,13 @@ type HealthCheckModel struct {
 	db *gorm.DB
 }
 type HealthCheck struct {
-	ID              int
-	Name            string
-	Type            int
-	CheckInterval   int
-	Threshould      int
-	Params          *HealthCheckParams `gorm:"type:json"`
-	RoutingPolicies *RoutingPolicies
+	ID              int                `json:"id"`
+	Name            string             `json:"name"`
+	Type            int                `json:"type"`
+	CheckInterval   int                `json:"check_interval"`
+	Threshould      int                `json:"threshould"`
+	Params          *HealthCheckParams `json:"params" gorm:"type:json"`
+	RoutingPolicies *RoutingPolicies   `json:"routing_polilcies"`
 }
 
 type HealthChecks []HealthCheck

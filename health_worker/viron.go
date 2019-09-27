@@ -61,7 +61,7 @@ func vironGlobalMenu(c echo.Context) error {
         {
           "api": {
             "method": "get",
-            "path": "/"
+            "path": "/healthchecks"
           },
 	  "query": [
 	    { key: "id", type: "integer" },

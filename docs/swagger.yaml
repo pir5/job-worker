@@ -4,7 +4,7 @@ definitions:
     type: object
   model.HealthCheck:
     properties:
-      checkInterval:
+      check_interval:
         type: integer
       id:
         type: integer
@@ -13,7 +13,7 @@ definitions:
       params:
         $ref: '#/definitions/model.HealthCheckParams'
         type: object
-      routingPolicies:
+      routing_polilcies:
         $ref: '#/definitions/model.RoutingPolicies'
         type: object
       threshould:
@@ -41,11 +41,11 @@ definitions:
   model.RoutingPolicies:
     items:
       properties:
-        healthCheckID:
+        health_check_id:
           type: integer
         id:
           type: integer
-        recordID:
+        record_id:
           type: integer
         type:
           type: integer
@@ -53,11 +53,11 @@ definitions:
     type: array
   model.RoutingPolicy:
     properties:
-      healthCheckID:
+      health_check_id:
         type: integer
       id:
         type: integer
-      recordID:
+      record_id:
         type: integer
       type:
         type: integer

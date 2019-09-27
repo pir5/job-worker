@@ -543,7 +543,7 @@
         "model.HealthCheck": {
             "type": "object",
             "properties": {
-                "checkInterval": {
+                "check_interval": {
                     "type": "integer"
                 },
                 "id": {
@@ -556,7 +556,7 @@
                     "type": "object",
                     "$ref": "#/definitions/model.HealthCheckParams"
                 },
-                "routingPolicies": {
+                "routing_polilcies": {
                     "type": "object",
                     "$ref": "#/definitions/model.RoutingPolicies"
                 },
@@ -599,13 +599,13 @@
             "items": {
                 "type": "object",
                 "properties": {
-                    "healthCheckID": {
+                    "health_check_id": {
                         "type": "integer"
                     },
                     "id": {
                         "type": "integer"
                     },
-                    "recordID": {
+                    "record_id": {
                         "type": "integer"
                     },
                     "type": {
@@ -617,13 +617,13 @@
         "model.RoutingPolicy": {
             "type": "object",
             "properties": {
-                "healthCheckID": {
+                "health_check_id": {
                     "type": "integer"
                 },
                 "id": {
                     "type": "integer"
                 },
-                "recordID": {
+                "record_id": {
                     "type": "integer"
                 },
                 "type": {
