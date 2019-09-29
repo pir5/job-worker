@@ -35,10 +35,6 @@ func (h *HealthCheckHandler) getHealthChecks(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, err)
 	}
 
-	if ds == nil || len(ds) == 0 {
-		return c.JSON(http.StatusNotFound, "healthchecks does not exists")
-	}
-
 	return c.JSON(http.StatusOK, ds)
 }
 
