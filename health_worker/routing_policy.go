@@ -18,8 +18,8 @@ import (
 // @Produce  json
 // @Param id query int false "RoutingPolicy ID"
 // @Param name query string false "Name"
-// @Success 200 {array} model.RoutingPolicy
-// @Failure 404 {object} health_worker.HTTPError
+// @Success 200 {array} model.RoutingPolicies
+// @Success 404 {array} model.RoutingPolicies
 // @Failure 500 {object} health_worker.HTTPError
 // @Router /routingpolicies [get]
 func (h *RoutingPolicyHandler) getRoutingPolicies(c echo.Context) error {

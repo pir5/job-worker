@@ -17,8 +17,8 @@ import (
 // @Produce  json
 // @Param id query int false "HealthCheck ID"
 // @Param name query string false "Name"
-// @Success 200 {array} model.HealthCheck
-// @Failure 404 {object} health_worker.HTTPError
+// @Success 200 {array} model.HealthChecks
+// @Success 404 {array} model.HealthChecks
 // @Failure 500 {object} health_worker.HTTPError
 // @Router /healthchecks [get]
 func (h *HealthCheckHandler) getHealthChecks(c echo.Context) error {
