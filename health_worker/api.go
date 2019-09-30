@@ -116,7 +116,13 @@ func runAPI(cmdFlags *GlobalFlags, args []string) error {
 	HealthCheckEndpoints(v1, db.Set("gorm:association_autoupdate", false).Set("gorm:association_autocreate", false))
 	RoutingPolicyEndpoints(v1, db.Set("gorm:association_autoupdate", false).Set("gorm:association_autocreate", false), pdnsAPI)
 	VironEndpoints(v1)
+
 	docs.SwaggerInfo.Host = globalConfig.Listen
+
+	if globalConfig.Endpoint != "" {
+		docs.SwaggerInfo.Host = globalConfig.Endpoint
+	}
+
 	e.GET("/", func(c echo.Context) error {
 		return c.String(http.StatusOK, "Hello! HealthWorker!!1")
 	})

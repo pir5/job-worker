@@ -18,8 +18,8 @@ import (
 // @Produce  json
 // @Param id query int false "RoutingPolicy ID"
 // @Param name query string false "Name"
-// @Success 200 {array} model.RoutingPolicies
-// @Success 404 {array} model.RoutingPolicies
+// @Success 200 {array} model.RoutingPolicy
+// @Success 404 {array} model.RoutingPolicy
 // @Failure 500 {object} health_worker.HTTPError
 // @Router /routingpolicies [get]
 func (h *RoutingPolicyHandler) getRoutingPolicies(c echo.Context) error {
@@ -46,7 +46,7 @@ func (h *RoutingPolicyHandler) getRoutingPolicies(c echo.Context) error {
 // @Security Secret
 // @Accept  json
 // @Produce  json
-// @Param id path string true "RoutingPolicy ID"
+// @Param id path integer true "RoutingPolicy ID"
 // @Param healthCheck body model.RoutingPolicy true "RoutingPolicy Object"
 // @Success 200 {object} model.RoutingPolicy
 // @Failure 403 {object} health_worker.HTTPError
@@ -76,7 +76,7 @@ func (h *RoutingPolicyHandler) updateRoutingPolicy(c echo.Context) error {
 // @Security Secret
 // @Accept  json
 // @Produce  json
-// @Param id path string true "RoutingPolicy ID"
+// @Param id path integer true "RoutingPolicy ID"
 // @Success 204 {object} model.RoutingPolicy
 // @Failure 403 {object} health_worker.HTTPError
 // @Failure 404 {object} health_worker.HTTPError

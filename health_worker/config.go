@@ -54,6 +54,7 @@ type Config struct {
 	PollInterval int      `mapstructure:"poll_interval"`
 	Concurrency  int      `mapstructure:"concurrency"`
 	Listen       string   `mapstructure:"listen"`
+	Endpoint     string   `mapstructure:"endpoint"`
 	DB           database `mapstructure:"database"`
 	Redis        redis    `mapstructure:"redis"`
 	PdnsAPI      pdnsAPI  `mapstructure:"pdnsAPI"`

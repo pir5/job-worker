@@ -98,8 +98,9 @@ paths:
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/health_worker.HTTPError'
-            type: object
+            items:
+              $ref: '#/definitions/model.HealthCheck'
+            type: array
         "500":
           description: Internal Server Error
           schema:
@@ -158,7 +159,7 @@ paths:
         in: path
         name: id
         required: true
-        type: string
+        type: integer
       produces:
       - application/json
       responses:
@@ -195,7 +196,7 @@ paths:
         in: path
         name: id
         required: true
-        type: string
+        type: integer
       - description: HealthCheck Object
         in: body
         name: healthCheck
@@ -256,8 +257,9 @@ paths:
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/health_worker.HTTPError'
-            type: object
+            items:
+              $ref: '#/definitions/model.RoutingPolicy'
+            type: array
         "500":
           description: Internal Server Error
           schema:
@@ -316,7 +318,7 @@ paths:
         in: path
         name: id
         required: true
-        type: string
+        type: integer
       produces:
       - application/json
       responses:
@@ -353,7 +355,7 @@ paths:
         in: path
         name: id
         required: true
-        type: string
+        type: integer
       - description: RoutingPolicy Object
         in: body
         name: healthCheck

@@ -17,8 +17,8 @@ import (
 // @Produce  json
 // @Param id query int false "HealthCheck ID"
 // @Param name query string false "Name"
-// @Success 200 {array} model.HealthChecks
-// @Success 404 {array} model.HealthChecks
+// @Success 200 {array} model.HealthCheck
+// @Success 404 {array} model.HealthCheck
 // @Failure 500 {object} health_worker.HTTPError
 // @Router /healthchecks [get]
 func (h *HealthCheckHandler) getHealthChecks(c echo.Context) error {
@@ -45,7 +45,7 @@ func (h *HealthCheckHandler) getHealthChecks(c echo.Context) error {
 // @Security Secret
 // @Accept  json
 // @Produce  json
-// @Param id path string true "HealthCheck ID"
+// @Param id path integer true "HealthCheck ID"
 // @Param healthCheck body model.HealthCheck true "HealthCheck Object"
 // @Success 200 {object} model.HealthCheck
 // @Failure 403 {object} health_worker.HTTPError
@@ -75,7 +75,7 @@ func (h *HealthCheckHandler) updateHealthCheck(c echo.Context) error {
 // @Security Secret
 // @Accept  json
 // @Produce  json
-// @Param id path string true "HealthCheck ID"
+// @Param id path integer true "HealthCheck ID"
 // @Success 204 {object} model.HealthCheck
 // @Failure 403 {object} health_worker.HTTPError
 // @Failure 404 {object} health_worker.HTTPError
