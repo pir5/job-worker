@@ -8,7 +8,7 @@ CREATE TABLE health_checks (
   threshould            INT DEFAULT NULL,
   params                JSON DEFAULT NULL,
   PRIMARY KEY (id)
-) Engine=InnoDB CHARACTER SET 'latin1';
+) Engine=InnoDB CHARACTER SET 'utf8mb4';
 
 CREATE UNIQUE INDEX health_checks_name_index ON health_checks(name);
 
@@ -18,6 +18,6 @@ CREATE TABLE routing_policies (
   health_check_id       INT NOT NULL,
   type                  TINYINT DEFAULT 0,
   PRIMARY KEY (id)
-) Engine=InnoDB CHARACTER SET 'latin1';
+) Engine=InnoDB CHARACTER SET 'utf8mb4';
 
 -- +migrate Down
