@@ -20,11 +20,12 @@ dbmigrate: dbcreate
 	@echo "$(INFO_COLOR)==> $(RESET)$(BOLD)Migrate database$(RESET)"
 	sql-migrate up health_worker
 depends:
-	GO111MODULE=off go get -v github.com/rubenv/sql-migrate/...
-	$(GO) get -u github.com/swaggo/echo-swagger
+	which sql-migrate &> /dev/null || go install github.com/rubenv/sql-migrate/...@latest
+	which swag &> /dev/null || go install github.com/swaggo/swag/cmd/swag@latest
+	go get -u github.com/swaggo/echo-swagger@latest
+swag: depends
+	swag init --parseInternal --parseDependency --parseDepth 2
 
-swag:
-	swag i
 run_register:
 	$(GO) run main.go --config ./misc/develop.toml register
 run_worker:
@@ -32,7 +33,10 @@ run_worker:
 run_api: swag
 	$(GO) run main.go --config ./misc/develop.toml api
 
-test: ## Run test
+tidy:
+	go mod tidy
+
+test: tidy ## Run test
 	@echo "$(INFO_COLOR)==> $(RESET)$(BOLD)Testing$(RESET)"
 	$(GO) test -v $(TEST) -timeout=30s -parallel=4
 	$(GO) test -race $(TEST)

@@ -1,6 +1,8 @@
 basePath: /v1
 definitions:
   health_worker.HTTPError:
+    properties:
+      message: {}
     type: object
   model.HealthCheck:
     properties:
@@ -12,10 +14,10 @@ definitions:
         type: string
       params:
         $ref: '#/definitions/model.HealthCheckParams'
-        type: object
       routing_polilcies:
-        $ref: '#/definitions/model.RoutingPolicies'
-        type: object
+        items:
+          $ref: '#/definitions/model.RoutingPolicy'
+        type: array
       threshould:
         type: integer
       type:
@@ -31,26 +33,11 @@ definitions:
         type: string
       port:
         type: integer
-      protocol:
-        type: integer
       searchWord:
         type: string
       timeout:
         type: integer
     type: object
-  model.RoutingPolicies:
-    items:
-      properties:
-        health_check_id:
-          type: integer
-        id:
-          type: integer
-        record_id:
-          type: integer
-        type:
-          type: integer
-      type: object
-    type: array
   model.RoutingPolicy:
     properties:
       health_check_id:
@@ -62,7 +49,6 @@ definitions:
       type:
         type: integer
     type: object
-host: '{{.Host}}'
 info:
   contact: {}
   description: This is PIR5 HealthCheck worker and API
@@ -105,7 +91,6 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/health_worker.HTTPError'
-            type: object
       security:
       - ID: []
       - Secret: []
@@ -121,7 +106,6 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/model.HealthCheck'
-          type: object
       produces:
       - application/json
       responses:
@@ -129,22 +113,18 @@ paths:
           description: Created
           schema:
             $ref: '#/definitions/model.HealthCheck'
-            type: object
         "403":
           description: Forbidden
           schema:
             $ref: '#/definitions/health_worker.HTTPError'
-            type: object
         "404":
           description: Not Found
           schema:
             $ref: '#/definitions/health_worker.HTTPError'
-            type: object
         "500":
           description: Internal Server Error
           schema:
             $ref: '#/definitions/health_worker.HTTPError'
-            type: object
       security:
       - ID: []
       - Secret: []
@@ -167,22 +147,18 @@ paths:
           description: No Content
           schema:
             $ref: '#/definitions/model.HealthCheck'
-            type: object
         "403":
           description: Forbidden
           schema:
             $ref: '#/definitions/health_worker.HTTPError'
-            type: object
         "404":
           description: Not Found
           schema:
             $ref: '#/definitions/health_worker.HTTPError'
-            type: object
         "500":
           description: Internal Server Error
           schema:
             $ref: '#/definitions/health_worker.HTTPError'
-            type: object
       security:
       - ID: []
       - Secret: []
@@ -203,7 +179,6 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/model.HealthCheck'
-          type: object
       produces:
       - application/json
       responses:
@@ -211,22 +186,18 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/model.HealthCheck'
-            type: object
         "403":
           description: Forbidden
           schema:
             $ref: '#/definitions/health_worker.HTTPError'
-            type: object
         "404":
           description: Not Found
           schema:
             $ref: '#/definitions/health_worker.HTTPError'
-            type: object
         "500":
           description: Internal Server Error
           schema:
             $ref: '#/definitions/health_worker.HTTPError'
-            type: object
       security:
       - ID: []
       - Secret: []
@@ -264,7 +235,6 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/health_worker.HTTPError'
-            type: object
       security:
       - ID: []
       - Secret: []
@@ -280,7 +250,6 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/model.RoutingPolicy'
-          type: object
       produces:
       - application/json
       responses:
@@ -288,22 +257,18 @@ paths:
           description: Created
           schema:
             $ref: '#/definitions/model.RoutingPolicy'
-            type: object
         "403":
           description: Forbidden
           schema:
             $ref: '#/definitions/health_worker.HTTPError'
-            type: object
         "404":
           description: Not Found
           schema:
             $ref: '#/definitions/health_worker.HTTPError'
-            type: object
         "500":
           description: Internal Server Error
           schema:
             $ref: '#/definitions/health_worker.HTTPError'
-            type: object
       security:
       - ID: []
       - Secret: []
@@ -326,22 +291,18 @@ paths:
           description: No Content
           schema:
             $ref: '#/definitions/model.RoutingPolicy'
-            type: object
         "403":
           description: Forbidden
           schema:
             $ref: '#/definitions/health_worker.HTTPError'
-            type: object
         "404":
           description: Not Found
           schema:
             $ref: '#/definitions/health_worker.HTTPError'
-            type: object
         "500":
           description: Internal Server Error
           schema:
             $ref: '#/definitions/health_worker.HTTPError'
-            type: object
       security:
       - ID: []
       - Secret: []
@@ -362,7 +323,6 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/model.RoutingPolicy'
-          type: object
       produces:
       - application/json
       responses:
@@ -370,22 +330,18 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/model.RoutingPolicy'
-            type: object
         "403":
           description: Forbidden
           schema:
             $ref: '#/definitions/health_worker.HTTPError'
-            type: object
         "404":
           description: Not Found
           schema:
             $ref: '#/definitions/health_worker.HTTPError'
-            type: object
         "500":
           description: Internal Server Error
           schema:
             $ref: '#/definitions/health_worker.HTTPError'
-            type: object
       security:
       - ID: []
       - Secret: []
@@ -398,6 +354,7 @@ paths:
       operationId: viron#get
       produces:
       - application/json
+      responses: {}
       summary: get global menu
       tags:
       - viron
@@ -409,6 +366,7 @@ paths:
       operationId: viron_authtype#get
       produces:
       - application/json
+      responses: {}
       summary: get auth type
       tags:
       - viron

@@ -17,7 +17,7 @@ import (
 	"github.com/facebookgo/pidfile"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
-	"github.com/labstack/echo/v4"
+	echo "github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/labstack/gommon/log"
 	"github.com/pir5/health-worker/docs"

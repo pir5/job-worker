@@ -22,9 +22,7 @@ var CmdRegister = &Command{
 	Run:       runRegister,
 	UsageLine: "register",
 	Short:     "Start Register Server",
-	Long: `
-Start Register Server
-	`,
+	Long:      `The register retrieves health checks that are registered in the database and enqueues tasks to the health checker. `,
 }
 
 // runRegister executes sub command and return exit code.
@@ -68,28 +66,6 @@ func runRegister(cmdFlags *GlobalFlags, args []string) error {
 				&v,
 			)
 		}
-
-		// test data
-		//t := model.HealthCheck{
-		//	Name:          "test",
-		//	Type:          0,
-		//	CheckInterval: 10,
-		//	Threshould:    5,
-		//	Params: &model.HealthCheckParams{
-		//		Addr:       "127.0.0.1",
-		//		Port:       8080,
-		//		HostName:   "localhost",
-		//		Path:       "swagger/index.html",
-		//		SearchWord: "",
-		//		Timeout:    1000000000,
-		//	},
-		//	RoutingPolicies: nil,
-		//}
-		//
-		//workers.Enqueue(EnqueKey,
-		//	"Add",
-		//	t,
-		//)
 
 		time.Sleep(time.Duration(conf.PollInterval) * time.Second)
 	}
