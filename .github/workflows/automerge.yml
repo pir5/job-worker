@@ -15,9 +15,6 @@ jobs:
         uses: dependabot/fetch-metadata@v1
         with:
           github-token: "${{ secrets.GITHUB_TOKEN }}"
-      - name: Dependabot metadata
-        uses: dependabot/fetch-metadata@v1
-        id: metadata
       - name: Wait for status checks
         uses: lewagon/wait-on-check-action@v1.3.3
         with:
