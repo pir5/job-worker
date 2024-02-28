@@ -35,7 +35,7 @@ func vironAuthType(c echo.Context) error {
 
 }
 
-//vironGlobalMenu
+// vironGlobalMenu
 // @Summary get global menu
 // @Description get global menu
 // @ID viron#get
@@ -47,7 +47,7 @@ func vironGlobalMenu(c echo.Context) error {
 	encodedJSON := []byte(`{
   "theme": "standard",
   "color": "white",
-  "name": "Viron example - local",
+  "name": "Health Checker",
   "tags": [
     "healthchecks",
     "routingpolicies"
