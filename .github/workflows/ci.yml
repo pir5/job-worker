@@ -35,7 +35,7 @@ jobs:
 
     - name: Install Dependencies
       run: |
-        make devdeps
+        make depends
         make dbcreate
         make dbmigrate
 
