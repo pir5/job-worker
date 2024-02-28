@@ -10,7 +10,6 @@
         },
         "version": "1.0"
     },
-    "host": "{{.Host}}",
     "basePath": "/v1",
     "paths": {
         "/healthchecks": {
@@ -67,7 +66,6 @@
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "type": "object",
                             "$ref": "#/definitions/health_worker.HTTPError"
                         }
                     }
@@ -97,7 +95,6 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "object",
                             "$ref": "#/definitions/model.HealthCheck"
                         }
                     }
@@ -106,28 +103,24 @@
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "type": "object",
                             "$ref": "#/definitions/model.HealthCheck"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "type": "object",
                             "$ref": "#/definitions/health_worker.HTTPError"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "type": "object",
                             "$ref": "#/definitions/health_worker.HTTPError"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "type": "object",
                             "$ref": "#/definitions/health_worker.HTTPError"
                         }
                     }
@@ -166,7 +159,6 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "object",
                             "$ref": "#/definitions/model.HealthCheck"
                         }
                     }
@@ -175,28 +167,24 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "object",
                             "$ref": "#/definitions/model.HealthCheck"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "type": "object",
                             "$ref": "#/definitions/health_worker.HTTPError"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "type": "object",
                             "$ref": "#/definitions/health_worker.HTTPError"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "type": "object",
                             "$ref": "#/definitions/health_worker.HTTPError"
                         }
                     }
@@ -232,28 +220,24 @@
                     "204": {
                         "description": "No Content",
                         "schema": {
-                            "type": "object",
                             "$ref": "#/definitions/model.HealthCheck"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "type": "object",
                             "$ref": "#/definitions/health_worker.HTTPError"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "type": "object",
                             "$ref": "#/definitions/health_worker.HTTPError"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "type": "object",
                             "$ref": "#/definitions/health_worker.HTTPError"
                         }
                     }
@@ -314,7 +298,6 @@
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "type": "object",
                             "$ref": "#/definitions/health_worker.HTTPError"
                         }
                     }
@@ -344,7 +327,6 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "object",
                             "$ref": "#/definitions/model.RoutingPolicy"
                         }
                     }
@@ -353,28 +335,24 @@
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "type": "object",
                             "$ref": "#/definitions/model.RoutingPolicy"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "type": "object",
                             "$ref": "#/definitions/health_worker.HTTPError"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "type": "object",
                             "$ref": "#/definitions/health_worker.HTTPError"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "type": "object",
                             "$ref": "#/definitions/health_worker.HTTPError"
                         }
                     }
@@ -413,7 +391,6 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "object",
                             "$ref": "#/definitions/model.RoutingPolicy"
                         }
                     }
@@ -422,28 +399,24 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "object",
                             "$ref": "#/definitions/model.RoutingPolicy"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "type": "object",
                             "$ref": "#/definitions/health_worker.HTTPError"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "type": "object",
                             "$ref": "#/definitions/health_worker.HTTPError"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "type": "object",
                             "$ref": "#/definitions/health_worker.HTTPError"
                         }
                     }
@@ -479,28 +452,24 @@
                     "204": {
                         "description": "No Content",
                         "schema": {
-                            "type": "object",
                             "$ref": "#/definitions/model.RoutingPolicy"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "type": "object",
                             "$ref": "#/definitions/health_worker.HTTPError"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "type": "object",
                             "$ref": "#/definitions/health_worker.HTTPError"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "type": "object",
                             "$ref": "#/definitions/health_worker.HTTPError"
                         }
                     }
@@ -520,7 +489,8 @@
                     "viron"
                 ],
                 "summary": "get global menu",
-                "operationId": "viron#get"
+                "operationId": "viron#get",
+                "responses": {}
             }
         },
         "/viron_authtype": {
@@ -536,13 +506,17 @@
                     "viron"
                 ],
                 "summary": "get auth type",
-                "operationId": "viron_authtype#get"
+                "operationId": "viron_authtype#get",
+                "responses": {}
             }
         }
     },
     "definitions": {
         "health_worker.HTTPError": {
-            "type": "object"
+            "type": "object",
+            "properties": {
+                "message": {}
+            }
         },
         "model.HealthCheck": {
             "type": "object",
@@ -557,12 +531,13 @@
                     "type": "string"
                 },
                 "params": {
-                    "type": "object",
                     "$ref": "#/definitions/model.HealthCheckParams"
                 },
                 "routing_polilcies": {
-                    "type": "object",
-                    "$ref": "#/definitions/model.RoutingPolicies"
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.RoutingPolicy"
+                    }
                 },
                 "threshould": {
                     "type": "integer"
@@ -587,34 +562,11 @@
                 "port": {
                     "type": "integer"
                 },
-                "protocol": {
-                    "type": "integer"
-                },
                 "searchWord": {
                     "type": "string"
                 },
                 "timeout": {
                     "type": "integer"
-                }
-            }
-        },
-        "model.RoutingPolicies": {
-            "type": "array",
-            "items": {
-                "type": "object",
-                "properties": {
-                    "health_check_id": {
-                        "type": "integer"
-                    },
-                    "id": {
-                        "type": "integer"
-                    },
-                    "record_id": {
-                        "type": "integer"
-                    },
-                    "type": {
-                        "type": "integer"
-                    }
                 }
             }
         },
