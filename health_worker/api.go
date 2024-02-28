@@ -127,6 +127,7 @@ func runAPI(cmdFlags *GlobalFlags, args []string) error {
 		}
 		docs.SwaggerInfo.Schemes = []string{u.Scheme}
 		docs.SwaggerInfo.Host = u.Host
+		docs.SwaggerInfo.BasePath = u.Path
 	}
 
 	e.GET("/", func(c echo.Context) error {
