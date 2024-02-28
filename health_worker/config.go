@@ -75,12 +75,11 @@ func NewConfig(confPath string) (*Config, error) {
 	viper.AutomaticEnv()
 	viper.SetEnvPrefix("PIR5")
 	viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
+	bindEnvs(conf)
 
 	if err := viper.ReadInConfig(); err != nil {
 		return nil, fmt.Errorf("readin config error %s", err)
 	}
-
-	bindEnvs(conf)
 
 	if err := viper.Unmarshal(&conf); err != nil {
 		return nil, fmt.Errorf("unmarshal config error %s", err)
