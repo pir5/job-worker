@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"net/url"
 	"os" // Import this package
 	"os/signal"
 	"time"
@@ -120,7 +121,12 @@ func runAPI(cmdFlags *GlobalFlags, args []string) error {
 	docs.SwaggerInfo.Host = globalConfig.Listen
 
 	if globalConfig.Endpoint != "" {
-		docs.SwaggerInfo.Host = globalConfig.Endpoint
+		u, err := url.Parse(globalConfig.Endpoint)
+		if err != nil {
+			return err
+		}
+		docs.SwaggerInfo.Schemes = []string{u.Scheme}
+		docs.SwaggerInfo.Host = u.Host
 	}
 
 	e.GET("/", func(c echo.Context) error {
