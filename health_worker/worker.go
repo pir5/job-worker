@@ -1,6 +1,7 @@
 package health_worker
 
 import (
+	"context"
 	"fmt"
 	"os" // Import this package
 
@@ -8,9 +9,9 @@ import (
 	"github.com/go-openapi/strfmt"
 	"github.com/pir5/pir5-go/dnsapi/operations"
 
-	goredis "github.com/go-redis/redis"
 	"github.com/pir5/health-worker/model"
 	"github.com/pkg/errors"
+	goredis "github.com/redis/go-redis/v9"
 
 	"github.com/facebookgo/pidfile"
 	"github.com/jinzhu/gorm"
@@ -68,7 +69,7 @@ func runWorker(cmdFlags *GlobalFlags, args []string) error {
 		DB:       conf.Redis.DB,
 	})
 
-	if _, err := redisClient.Ping().Result(); err != nil {
+	if _, err := redisClient.Ping(context.Background()).Result(); err != nil {
 		return err
 	}
 
@@ -97,6 +98,7 @@ func (w *Worker) do(msg *workers.Msg) {
 	}
 
 	if h != nil {
+		ctx := context.Background()
 		switch h.Type {
 		case model.HealthCheckTypeTCP:
 			if checkError = model.TCPCheck(h.Params); checkError != nil {
@@ -115,23 +117,28 @@ func (w *Worker) do(msg *workers.Msg) {
 			return
 		}
 
-		if err := w.afterCheck(h, (checkError == nil)); err != nil {
+		if h.Params.Timeout != 0 {
+			c, cancel := context.WithTimeout(ctx, h.Params.Timeout*2)
+			defer cancel()
+			ctx = c
+		}
+		if err := w.afterCheck(ctx, h, (checkError == nil)); err != nil {
 			log.Error(errors.Wrap(err, "after check process failed"))
 		}
 	}
 }
 
-func (w *Worker) afterCheck(h *model.HealthCheck, checkResult bool) error {
+func (w *Worker) afterCheck(ctx context.Context, h *model.HealthCheck, checkResult bool) error {
 	var currentFailedCount int
 	key := fmt.Sprintf("failed_counter_%d", h.ID)
 	if !checkResult {
-		c, err := w.failedCounter.Increment(key)
+		c, err := w.failedCounter.Increment(ctx, key)
 		if err != nil {
 			return err
 		}
 		currentFailedCount = c
 	} else {
-		err := w.failedCounter.Reset(key)
+		err := w.failedCounter.Reset(ctx, key)
 		if err != nil {
 			return err
 		}

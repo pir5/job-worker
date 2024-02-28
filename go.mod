@@ -7,7 +7,6 @@ require (
 	github.com/facebookgo/pidfile v0.0.0-20150612191647-f242e2999868
 	github.com/go-openapi/runtime v0.19.6
 	github.com/go-openapi/strfmt v0.19.3
-	github.com/go-redis/redis v6.15.5+incompatible
 	github.com/jinzhu/gorm v1.9.10
 	github.com/jrallison/go-workers v0.0.0-20180112190529-dbf81d0b75bb
 	github.com/labstack/echo/v4 v4.11.4
@@ -15,6 +14,7 @@ require (
 	github.com/pir5/pdns-api v0.0.0-20190925051421-75744d51dbf6
 	github.com/pir5/pir5-go v0.0.0-20190925050712-30bbd6dbeb2a
 	github.com/pkg/errors v0.9.1
+	github.com/redis/go-redis/v9 v9.5.1
 	github.com/sonod/go-workers v0.0.0-20171219091411-9fae573cbcc8
 	github.com/spf13/viper v1.4.0
 	github.com/swaggo/echo-swagger v1.4.1
@@ -27,8 +27,10 @@ require (
 	github.com/asaskevich/govalidator v0.0.0-20190424111038-f61b66f89f4a // indirect
 	github.com/bitly/go-simplejson v0.5.0 // indirect
 	github.com/bmizerany/assert v0.0.0-20160611221934-b7ed37b82869 // indirect
+	github.com/cespare/xxhash/v2 v2.2.0 // indirect
 	github.com/customerio/gospec v0.0.0-20130710230057-a5cc0e48aa39 // indirect
 	github.com/denisenkom/go-mssqldb v0.9.0 // indirect
+	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
 	github.com/facebookgo/atomicfile v0.0.0-20151019160806-2de1f203e7d5 // indirect
 	github.com/fsnotify/fsnotify v1.4.7 // indirect
 	github.com/garyburd/redigo v1.6.0 // indirect
