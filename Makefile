@@ -20,8 +20,8 @@ dbmigrate: dbcreate
 	@echo "$(INFO_COLOR)==> $(RESET)$(BOLD)Migrate database$(RESET)"
 	sql-migrate up health_worker
 depends:
-	which sql-migrate &> /dev/null || go install github.com/rubenv/sql-migrate/...@latest
 	which swag &> /dev/null || go install github.com/swaggo/swag/cmd/swag@latest
+	go install github.com/rubenv/sql-migrate/...@latest
 	go get -u github.com/swaggo/echo-swagger@latest
 swag: depends
 	swag init --parseInternal --parseDependency --parseDepth 2
