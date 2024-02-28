@@ -76,7 +76,7 @@ func initCommand(cmdFlags *GlobalFlags) (*Config, error) {
 	if err := pidfile.Write(); err != nil {
 		return nil, err
 	}
-	return &conf, nil
+	return conf, nil
 }
 
 func getWorkerConfig(conf *Config) map[string]string {

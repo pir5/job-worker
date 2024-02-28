@@ -1,6 +1,7 @@
 package health_worker
 
 import (
+	"fmt"
 	"reflect"
 	"strings"
 
@@ -26,7 +27,7 @@ func BindEnvs(iface interface{}, parts ...string) {
 	}
 }
 
-func NewConfig(confPath string) (Config, error) {
+func NewConfig(confPath string) (*Config, error) {
 	var conf Config
 	defaultConfig(&conf)
 
@@ -37,16 +38,16 @@ func NewConfig(confPath string) (Config, error) {
 	viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
 
 	if err := viper.ReadInConfig(); err != nil {
-		return conf, err
+		return nil, fmt.Errorf("readin config error %s", err)
 	}
 
 	BindEnvs(conf)
 
 	if err := viper.Unmarshal(&conf); err != nil {
-		return conf, err
+		return nil, fmt.Errorf("unmarshal config error %s", err)
 	}
 
-	return conf, nil
+	return &conf, nil
 }
 
 type Config struct {
