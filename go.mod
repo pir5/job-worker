@@ -3,7 +3,7 @@ module github.com/pir5/health-worker
 go 1.22.0
 
 require (
-	github.com/DATA-DOG/go-sqlmock v1.3.3
+	github.com/DATA-DOG/go-sqlmock v1.5.2
 	github.com/facebookgo/pidfile v0.0.0-20150612191647-f242e2999868
 	github.com/go-openapi/runtime v0.19.6
 	github.com/go-openapi/strfmt v0.19.3
