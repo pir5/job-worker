@@ -7,7 +7,7 @@ require (
 	github.com/facebookgo/pidfile v0.0.0-20150612191647-f242e2999868
 	github.com/go-openapi/runtime v0.19.6
 	github.com/go-openapi/strfmt v0.19.3
-	github.com/jinzhu/gorm v1.9.10
+	github.com/jinzhu/gorm v1.9.16
 	github.com/jrallison/go-workers v0.0.0-20180112190529-dbf81d0b75bb
 	github.com/labstack/echo/v4 v4.11.4
 	github.com/labstack/gommon v0.4.2
